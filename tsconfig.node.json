@@ -8,7 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "noEmit": true,
-    "allowJs": true
+    "allowJs": true //설정
   },
-  "include": ["vite.config.ts", "./.eslintrc.cjs"]
+  "include": ["vite.config.ts", "./.eslintrc.cjs"] //설정
 }
