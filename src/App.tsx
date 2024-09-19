@@ -1,7 +1,7 @@
 import './styles/App.css'
 
 function App() {
-  return <>Initial Setting!</>
+  return <div>App</div>
 }
 
 export default App
