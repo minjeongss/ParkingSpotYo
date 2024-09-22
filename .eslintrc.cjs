@@ -30,5 +30,10 @@ module.exports = {
     //   { allowConstantExport: true },
     // ],
     'react/react-in-jsx-scope': 'off', //react17 이상을 위한 설정
+    'react/function-component-definition': [
+      2,
+      { namedComponents: ['arrow-function', 'function-declaration'] },
+    ],
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
   },
 }
