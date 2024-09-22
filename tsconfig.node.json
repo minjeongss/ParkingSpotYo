@@ -9,7 +9,7 @@
     "strict": true,
     "noEmit": true,
     "allowJs": true, //설정
-    "declaration": true
+    "declaration": true //설정
   },
   "include": ["vite.config.ts", "./.eslintrc.cjs"] //설정
 }

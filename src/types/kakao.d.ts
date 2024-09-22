@@ -1,4 +1,3 @@
-// kakao.d.ts 파일을 생성하거나 기존 파일에 추가
 declare global {
   interface Window {
     kakao: {
@@ -6,7 +5,7 @@ declare global {
         LatLng: new (lat: number, lng: number) => LatLngInstance
         Map: new (container: HTMLElement, options: MapOptions) => MapInstance
         Marker: new (options: MarkerOptions) => MarkerInstance
-        InfoWindow: new (content) => InfoInstance
+        InfoWindow: new (content: string | object) => InfoInstance
         event: {
           addListener: (
             target: MarkerInstance,
@@ -14,16 +13,18 @@ declare global {
             callback: () => void
           ) => void
         }
+        services: {
+          Places: new (map: MapInstance) => PlaceInstance
+          Status: {
+            OK: 'OK'
+          }
+        }
       }
     }
   }
 }
-export interface MarkerData {
-  title: string
-  content: string
-  latlng: LatLngInstance
-}
-// 카카오 지도 관련 타입 정의
+
+// 지도 기초 설정
 interface LatLngInstance {
   getLat: () => number
   getLng: () => number
@@ -33,21 +34,43 @@ interface MapOptions {
   center: LatLngInstance
   level: number
 }
-export interface MapInstance {
+
+interface MapInstance {
   setCenter: (latlng: LatLngInstance) => void
   setLevel: (level: number) => void
 }
+
+// 마커 설정
 interface MarkerOptions {
   map?: MapInstance | null
   position: LatLngInstance
   title?: string
 }
-export interface MarkerInstance {
+
+interface MarkerInstance {
   setMap: (map: MapInstance) => void
 }
-export interface InfoInstance {
+
+// 마커 이벤트 설정
+interface InfoInstance {
   open: (map: MapInstance, marker: MarkerInstance) => void
   close: () => void
+  setContent: (content: string | HTMLElement) => void
 }
 
-export {}
+// 카테고리 제한 설정
+interface PlaceInstance {
+  categorySearch: (
+    type: string,
+    placeSearch: PlacesSearchCallback,
+    target: object
+  ) => void
+}
+
+export interface Place {
+  place_name: string
+  y: number
+  x: number
+}
+
+export type PlacesSearchCallback = (data: Place[], status: string) => void
