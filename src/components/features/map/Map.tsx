@@ -86,7 +86,7 @@ const Map = () => {
       })
       window.kakao.maps.event.addListener(
         marker,
-        'mouseover',
+        'click',
         makeOverListener(map, marker, infowindow)
       )
       window.kakao.maps.event.addListener(

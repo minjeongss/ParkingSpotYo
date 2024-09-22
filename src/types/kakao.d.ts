@@ -18,7 +18,6 @@ declare global {
     }
   }
 }
-
 export interface MarkerData {
   title: string
   content: string
