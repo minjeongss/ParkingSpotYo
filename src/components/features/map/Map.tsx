@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Place, PlacesSearchCallback } from '../../../types/kakao' // 타입 가져오기
 import Modal from '../modal/Modal'
 
@@ -10,21 +10,19 @@ const MapContainer = styled.div({
 
 const Map = () => {
   useEffect(() => {
-    // 지도 정보
-    const options = {
-      center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 3,
-    }
-
     const container = document.getElementById('map')
     if (!container) {
       return
     }
+
+    // 지도 정보
+    const options = {
+      center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
+      level: 5,
+    }
+
     // 지도 생성
     const map = new window.kakao.maps.Map(container, options)
-
-    // 모달 생성
-    const infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 })
 
     // 마커 생성 함수
     const displayMarker = (place: Place) => {
@@ -43,20 +41,15 @@ const Map = () => {
         ),
       })
 
-      const content = document.createElement('div')
-      content.innerHTML = 'TESTTEST!!!!!!!!!'
-
-      const customOverlay = new kakao.maps.CustomOverlay({
-        map,
-        position: new window.kakao.maps.LatLng(place.y, place.x),
-        content: content,
-        yAnchor: 1,
-      })
       // 마커 이벤트 등록
       window.kakao.maps.event.addListener(marker, 'click', () => {
-        infowindow.setContent('<Modal title={place.place_name} />')
-        infowindow.open(map, marker)
+        const position = marker.getPosition()
+        const lat = position.getLat()
+        const lng = position.getLng()
+        setMarkerPosition({ lat, lng }) // 마커 위치 상태 업데이트
+        alert(`위치: ${lat}, ${lng}`) // 위치를 알림창으로 표시
       })
+      window.kakao.maps.event.addListener(marker, 'mouseout', () => {})
     }
 
     // 장소 카테고리 제한 함수
