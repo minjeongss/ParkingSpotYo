@@ -55,7 +55,7 @@ interface MarkerInstance {
 interface InfoInstance {
   open: (map: MapInstance, marker: MarkerInstance) => void
   close: () => void
-  setContent: (content: string | HTMLElement) => void
+  setContent: (content: string | HTMLElement | Element) => void
 }
 
 // 카테고리 제한 설정
