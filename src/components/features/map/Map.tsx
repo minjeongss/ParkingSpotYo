@@ -35,9 +35,7 @@ const Map = () => {
       // 마커 이벤트 등록
       window.kakao.maps.event.addListener(marker, 'click', () => {
         infowindow.setContent(`
-          <div style="padding:5px;font-size:12px;">
-            ${place.place_name}
-          </div>
+          <Modal title={${place.place_name}}/>
         `)
         infowindow.open(map, marker)
       })
