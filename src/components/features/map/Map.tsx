@@ -61,6 +61,17 @@ const Map = () => {
       window.kakao.maps.event.addListener(map, 'dragstart', () => {
         setIsModal(false)
       })
+      window.kakao.maps.event.addListener(map, 'zoom_changed', () => {
+        const position = marker.getPosition()
+        const projection = map.getProjection()
+        const point = projection.pointFromCoords(position)
+
+        setMarkerScreenPosition({
+          x: point.x,
+          y: point.y,
+        }) // 화면 좌표 상태 업데이트
+        setIsModal(false)
+      })
     }
 
     const placesSearch: PlacesSearchCallback = (data, status) => {
