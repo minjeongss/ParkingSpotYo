@@ -23,5 +23,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*"] //설정
+  "include": ["src/**/*", "src/types/svg.d.ts"] //설정
 }

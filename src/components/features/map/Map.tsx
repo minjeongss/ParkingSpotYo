@@ -1,35 +1,37 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import { Place, PlacesSearchCallback } from '../../../types/kakao' // 타입 가져오기
+import { Place, PlacesSearchCallback } from '../../../types/kakao'
 import Modal from '../modal/Modal'
 
 const MapContainer = styled.div({
-  width: '100%', // 너비 설정
-  height: '100vh', // 높이 설정
+  width: '100%',
+  height: '100vh',
 })
 
 const Map = () => {
+  const [markerScreenPosition, setMarkerScreenPosition] = useState<{
+    x: number
+    y: number
+  } | null>(null)
+  const [isModal, setIsModal] = useState<boolean>(false)
+
   useEffect(() => {
     const container = document.getElementById('map')
     if (!container) {
       return
     }
 
-    // 지도 정보
     const options = {
       center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 5,
+      level: 3,
     }
 
-    // 지도 생성
     const map = new window.kakao.maps.Map(container, options)
 
-    // 마커 생성 함수
     const displayMarker = (place: Place) => {
-      // 마커 표시
-      const imageSrc = '/src/assets/marker.svg' // 마커이미지의 주소입니다
-      const imageSize = new kakao.maps.Size(30, 30) // 마커이미지의 크기입니다
-      const imageOption = { offset: new kakao.maps.Point(27, 69) } // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      const imageSrc = '/src/assets/marker.svg'
+      const imageSize = new window.kakao.maps.Size(30, 30)
+      const imageOption = { offset: new window.kakao.maps.Point(15, 30) }
 
       const marker = new window.kakao.maps.Marker({
         map,
@@ -41,18 +43,26 @@ const Map = () => {
         ),
       })
 
-      // 마커 이벤트 등록
+      // 마커 클릭 이벤트 등록
       window.kakao.maps.event.addListener(marker, 'click', () => {
         const position = marker.getPosition()
-        const lat = position.getLat()
-        const lng = position.getLng()
-        setMarkerPosition({ lat, lng }) // 마커 위치 상태 업데이트
-        alert(`위치: ${lat}, ${lng}`) // 위치를 알림창으로 표시
+        const projection = map.getProjection()
+        const point = projection.pointFromCoords(position)
+
+        setMarkerScreenPosition({
+          x: point.x,
+          y: point.y,
+        }) // 화면 좌표 상태 업데이트
+        setIsModal(true)
       })
-      window.kakao.maps.event.addListener(marker, 'mouseout', () => {})
+      window.kakao.maps.event.addListener(map, 'click', () => {
+        setIsModal(false)
+      })
+      window.kakao.maps.event.addListener(map, 'dragstart', () => {
+        setIsModal(false)
+      })
     }
 
-    // 장소 카테고리 제한 함수
     const placesSearch: PlacesSearchCallback = (data, status) => {
       if (status === window.kakao.maps.services.Status.OK) {
         data.forEach(item => {
@@ -61,12 +71,16 @@ const Map = () => {
       }
     }
 
-    // 장소 카테고리 제한
     const ps = new window.kakao.maps.services.Places(map)
     ps.categorySearch('PK6', placesSearch, { useMapBounds: true })
   }, [])
 
-  return <MapContainer id="map" />
+  return (
+    <>
+      <MapContainer id="map" />
+      {isModal && <Modal position={markerScreenPosition} />}
+    </>
+  )
 }
 
 export default Map
