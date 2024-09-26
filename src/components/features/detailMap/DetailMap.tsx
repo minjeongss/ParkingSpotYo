@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import Header from '../../layout/Header'
 import StaticMap from './StaticMap'
-import Info from './Info'
+import DetailInfo from './DetailInfo'
 
 const Container = styled.div({
   display: 'flex',
@@ -9,7 +9,7 @@ const Container = styled.div({
   alignItems: 'center',
   maxWidth: '880px',
   margin: 'auto',
-  border: '2px solid red',
+  border: '2px solid #D9D9D9',
 })
 const DetailMap = () => {
   return (
@@ -17,7 +17,7 @@ const DetailMap = () => {
       <Header />
       <Container>
         <StaticMap />
-        <Info />
+        <DetailInfo />
       </Container>
     </>
   )

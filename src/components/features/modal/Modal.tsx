@@ -19,7 +19,7 @@ const ModalContainer = styled.div<{
   background: 'white',
   borderRadius: '15px',
   padding: '1.5rem',
-  boxShadow: '0 4px 4px rgba(0 0 0 / 25%)',
+  boxShadow: '0 4px 4px rgba(0, 0, 0, 0.25)',
   zIndex: 999,
   minWidth: '250px',
   '&::after': {
@@ -44,11 +44,11 @@ const ParkingNumberText = styled.p({
   fontSize: '20px',
 })
 const ParkingAddressText = styled.p({
-  color: 'rgba(0,0,0/70)',
+  color: 'rgba(0,0,0,0.7)',
   fontSize: '18px',
 })
 const ParkingTypeText = styled.p({
-  color: 'rgba(0,0,0/54)',
+  color: 'rgba(0,0,0,0.54)',
   fontSize: '15px',
 })
 const DetailBtn = styled.button({
