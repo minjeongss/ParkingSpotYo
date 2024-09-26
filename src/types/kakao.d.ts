@@ -13,7 +13,7 @@ declare global {
         InfoWindow: new (content: string | object) => InfoInstance
         event: {
           addListener: (
-            target: MarkerInstance | MapInstance,
+            target: MarkerInstance | MapInstance | null,
             event: string,
             callback: () => void
           ) => void

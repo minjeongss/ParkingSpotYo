@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 import StarIcon from '../../../assets/star.svg?react'
 import MarkerIcon from '../../../assets/marker.svg?react'
+import { ParkingInfoPartial } from '../../../types/api'
 
 const ModalContainer = styled.div<{
   position: { x: number; y: number } | null
@@ -65,6 +66,7 @@ const Modal = ({
   info,
 }: {
   position: { x: number; y: number } | null
+  info: ParkingInfoPartial | null
 }) => {
   // 마커 중앙정렬 기능
   const modalRef = useRef<HTMLDivElement | null>(null)
@@ -93,11 +95,11 @@ const Modal = ({
         <MarkerIcon />
       </ParkingAddressText>
       <ParkingNumberText>
-        현재 주차 가능 대수: {info?.TPKCT - info?.NOW_PRK_VHCL_CNT}
+        현재 주차 가능 대수: {info ? info.TPKCT - info.NOW_PRK_VHCL_CNT : 0}
       </ParkingNumberText>
       <Container>
         <ParkingTypeText>
-          {info?.PRK_TYPE_NM} / 기본요금 {info?.BSC_PRK_CRG}원
+          {info?.PRK_TYPE_NM} / 기본요금 {info?.BSC_PRK_CRG ?? 0}원
         </ParkingTypeText>
         <DetailBtn>상세보기</DetailBtn>
       </Container>

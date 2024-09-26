@@ -1,12 +1,17 @@
 import axios from 'axios'
+import { ParkingInfo } from '../types/api'
 
-export const fetchParkingData = async () => {
+export const fetchParkingData = async (): Promise<
+  ParkingInfo[] | undefined
+> => {
   try {
-    const response = await axios(
+    const response = await axios.get(
       'http://openapi.seoul.go.kr:8088/4a594a4d426d696e37366374565352/json/GetParkingInfo/1/1000/종로구'
     )
-    return response.data['GetParkingInfo']['row']
+    const data = response.data as { GetParkingInfo: { row: ParkingInfo[] } }
+    return data.GetParkingInfo.row
   } catch (error) {
-    console.error('실패했습니다', error)
+    return undefined
   }
 }
+export default fetchParkingData
