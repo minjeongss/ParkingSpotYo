@@ -11,6 +11,10 @@ declare global {
           options?: { offset?: Point }
         ) => MarkerImageInstance
         InfoWindow: new (content: string | object) => InfoInstance
+        StaticMap: new (
+          staticMapContainer: HTMLElement,
+          staticMapOption: MapOptions
+        ) => void
         event: {
           addListener: (
             target: MarkerInstance | MapInstance | null,

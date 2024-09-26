@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
 import StarIcon from '../../../assets/star.svg?react'
 import MarkerIcon from '../../../assets/marker.svg?react'
@@ -50,9 +51,12 @@ const ParkingTypeText = styled.p({
   color: 'rgba(0,0,0/54)',
   fontSize: '15px',
 })
-const DetailBtn = styled.p({
+const DetailBtn = styled.button({
   color: '#4395F6',
   fontSize: '13px',
+  background: 'none',
+  border: 'none',
+  cursor: 'pointer',
 })
 const Container = styled.div({
   display: 'flex',
@@ -72,6 +76,7 @@ const Modal = ({
   const modalRef = useRef<HTMLDivElement | null>(null)
   const [modalWidth, setModalWidth] = useState<number>(0)
   const [modalHeight, setModalHeight] = useState<number>(0)
+  const navigate = useNavigate()
   useEffect(() => {
     if (modalRef.current) {
       setModalWidth(modalRef.current.offsetWidth)
@@ -101,7 +106,7 @@ const Modal = ({
         <ParkingTypeText>
           {info?.PRK_TYPE_NM} / 기본요금 {info?.BSC_PRK_CRG ?? 0}원
         </ParkingTypeText>
-        <DetailBtn>상세보기</DetailBtn>
+        <DetailBtn onClick={() => navigate('/detail')}>상세보기</DetailBtn>
       </Container>
     </ModalContainer>
   )
