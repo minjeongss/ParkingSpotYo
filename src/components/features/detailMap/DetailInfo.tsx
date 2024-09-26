@@ -12,8 +12,8 @@ const InfoContainer = styled.div({
 })
 const DotLine = styled.hr({
   border: 'none',
-  borderTop: '2px dotted #5E5D5D', // 도트 스타일
-  margin: '10px 0', // 상하 여백 조정
+  borderTop: '2px dotted #5E5D5D',
+  margin: '1rem 0',
 })
 const DetailInfo = () => {
   return (
