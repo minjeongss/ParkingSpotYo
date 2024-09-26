@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import { Place, PlacesSearchCallback } from '../../../types/kakao'
 import Modal from '../modal/Modal'
+import { fetchParkingData } from '../../../utils/fetchParkingData'
 
 const MapContainer = styled.div({
   width: '100%',
@@ -14,6 +14,58 @@ const Map = () => {
     y: number
   } | null>(null)
   const [isModal, setIsModal] = useState<boolean>(false)
+  const [data, setData] = useState(null)
+  const [map, setMap] = useState(null) // map 상태 추가
+  const [markerPosition, setMarkerPosition] = useState<number[]>([0, 0])
+  const [info, setInfo] = useState(null)
+  const displayMarker = (x, y) => {
+    const imageSrc = '/src/assets/marker.svg'
+    const imageSize = new window.kakao.maps.Size(30, 30)
+    const imageOption = { offset: new window.kakao.maps.Point(15, 30) }
+
+    const marker = new window.kakao.maps.Marker({
+      map, // 현재 map 객체 사용
+      position: new window.kakao.maps.LatLng(x, y),
+      image: new window.kakao.maps.MarkerImage(
+        imageSrc,
+        imageSize,
+        imageOption
+      ),
+    })
+
+    // 마커 클릭 이벤트 등록
+    window.kakao.maps.event.addListener(marker, 'click', () => {
+      const position = marker.getPosition()
+      const lat = position.getLat().toFixed()
+      const lng = position.getLng()
+      setMarkerPosition([lat, lng])
+      console.log('lat', lat, 'lng', lng)
+      const projection = map.getProjection()
+      const point = projection.pointFromCoords(position)
+
+      setMarkerScreenPosition({
+        x: point.x,
+        y: point.y,
+      })
+      for (let item in data) {
+        console.log(data[item].LAT === lat)
+      }
+      // const markerData = data.find(item => item.LAT === lat)
+      // if (markerData) {
+      //   setInfo(markerData)
+      //   console.log(markerData)
+      // }
+      setIsModal(true)
+    })
+    window.kakao.maps.event.addListener(map, 'click', () => {
+      setIsModal(false)
+      setInfo(null)
+    })
+    window.kakao.maps.event.addListener(map, 'dragstart', () => {
+      setIsModal(false)
+      setInfo(null)
+    })
+  }
 
   useEffect(() => {
     const container = document.getElementById('map')
@@ -21,75 +73,45 @@ const Map = () => {
       return
     }
 
+    // 종로구 중심: 37.595829, 126.977207
     const options = {
-      center: new window.kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 3,
+      center: new window.kakao.maps.LatLng(37.595829, 126.977207),
+      level: 5,
     }
 
-    const map = new window.kakao.maps.Map(container, options)
+    const initializedMap = new window.kakao.maps.Map(container, options)
+    setMap(initializedMap) // map 상태 업데이트
 
-    const displayMarker = (place: Place) => {
-      const imageSrc = '/src/assets/marker.svg'
-      const imageSize = new window.kakao.maps.Size(30, 30)
-      const imageOption = { offset: new window.kakao.maps.Point(15, 30) }
-
-      const marker = new window.kakao.maps.Marker({
-        map,
-        position: new window.kakao.maps.LatLng(place.y, place.x),
-        image: new window.kakao.maps.MarkerImage(
-          imageSrc,
-          imageSize,
-          imageOption
-        ),
-      })
-
-      // 마커 클릭 이벤트 등록
-      window.kakao.maps.event.addListener(marker, 'click', () => {
-        const position = marker.getPosition()
-        const projection = map.getProjection()
-        const point = projection.pointFromCoords(position)
-
-        setMarkerScreenPosition({
-          x: point.x,
-          y: point.y,
-        }) // 화면 좌표 상태 업데이트
-        setIsModal(true)
-      })
-      window.kakao.maps.event.addListener(map, 'click', () => {
-        setIsModal(false)
-      })
-      window.kakao.maps.event.addListener(map, 'dragstart', () => {
-        setIsModal(false)
-      })
-      window.kakao.maps.event.addListener(map, 'zoom_changed', () => {
-        const position = marker.getPosition()
-        const projection = map.getProjection()
-        const point = projection.pointFromCoords(position)
-
-        setMarkerScreenPosition({
-          x: point.x,
-          y: point.y,
-        }) // 화면 좌표 상태 업데이트
-        setIsModal(false)
-      })
+    const getData = async () => {
+      const tmp = await fetchParkingData()
+      setData(tmp)
     }
-
-    const placesSearch: PlacesSearchCallback = (data, status) => {
-      if (status === window.kakao.maps.services.Status.OK) {
-        data.forEach(item => {
-          displayMarker(item)
-        })
-      }
-    }
-
-    const ps = new window.kakao.maps.services.Places(map)
-    ps.categorySearch('PK6', placesSearch, { useMapBounds: true })
+    getData()
+    console.log('1: Map')
   }, [])
+
+  useEffect(() => {
+    if (map && data) {
+      data.forEach(elem => {
+        const lat = Number(elem.LAT)
+        const lot = Number(elem.LOT)
+        displayMarker(lat, lot) // 마커 표시
+      })
+    }
+  }, [data, map]) // data와 map이 변경될 때마다 실행
 
   return (
     <>
       <MapContainer id="map" />
-      {isModal && <Modal position={markerScreenPosition} />}
+      {isModal && (
+        <Modal
+          position={markerScreenPosition}
+          markerPosition={markerPosition}
+          data={data}
+          info={info}
+          setInfo={setInfo}
+        />
+      )}
     </>
   )
 }

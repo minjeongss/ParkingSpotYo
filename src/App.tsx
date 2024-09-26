@@ -1,4 +1,5 @@
 import Map from './components/features/map/Map'
+
 import './styles/App.css'
 
 function App() {

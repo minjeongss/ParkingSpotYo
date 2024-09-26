@@ -60,7 +60,15 @@ const Container = styled.div({
   gap: '6rem',
 })
 
-const Modal = ({ position }: { position: { x: number; y: number } | null }) => {
+const Modal = ({
+  position,
+  markerPosition,
+  data,
+  info,
+  setInfo,
+}: {
+  position: { x: number; y: number } | null
+}) => {
   // 마커 중앙정렬 기능
   const modalRef = useRef<HTMLDivElement | null>(null)
   const [modalWidth, setModalWidth] = useState<number>(0)
@@ -70,7 +78,9 @@ const Modal = ({ position }: { position: { x: number; y: number } | null }) => {
       setModalWidth(modalRef.current.offsetWidth)
       setModalHeight(modalRef.current.offsetHeight)
     }
+    console.log('2: ON MODAL REF')
   }, [position])
+
   return (
     <ModalContainer
       position={position}
@@ -79,16 +89,20 @@ const Modal = ({ position }: { position: { x: number; y: number } | null }) => {
       ref={modalRef}
     >
       <Container>
-        <ParkingNameText>주차장 이름</ParkingNameText>
+        <ParkingNameText>{info?.PKLT_NM}</ParkingNameText>
         <StarIcon />
       </Container>
       <ParkingAddressText>
-        위치: {position?.x}, {position?.y}
+        {info?.ADDR}
         <MarkerIcon />
       </ParkingAddressText>
-      <ParkingNumberText>현대 주차 가능 X대</ParkingNumberText>
+      <ParkingNumberText>
+        현재 주차 가능 대수: {info?.TPKCT - info?.NOW_PRK_VHCL_CNT}
+      </ParkingNumberText>
       <Container>
-        <ParkingTypeText>타입 / 기본요금 9000원</ParkingTypeText>
+        <ParkingTypeText>
+          {info?.PRK_TYPE_NM} / 기본요금 {info?.BSC_PRK_CRG}원
+        </ParkingTypeText>
         <DetailBtn>상세보기</DetailBtn>
       </Container>
     </ModalContainer>
