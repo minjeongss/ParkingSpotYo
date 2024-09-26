@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import Modal from '../modal/Modal'
-import { fetchParkingData } from '../../../utils/fetchParkingData'
+import { fetchParkingData } from '../../../services/apiService'
 
 const MapContainer = styled.div({
   width: '100%',
@@ -16,9 +16,17 @@ const Map = () => {
   const [isModal, setIsModal] = useState<boolean>(false)
   const [data, setData] = useState(null)
   const [map, setMap] = useState(null) // map 상태 추가
-  const [markerPosition, setMarkerPosition] = useState<number[]>([0, 0])
   const [info, setInfo] = useState(null)
-  const displayMarker = (x, y) => {
+  const displayMarker = (
+    x,
+    y,
+    name,
+    address,
+    entireParkingSpot,
+    ableParkingSpot,
+    type,
+    price
+  ) => {
     const imageSrc = '/src/assets/marker.svg'
     const imageSize = new window.kakao.maps.Size(30, 30)
     const imageOption = { offset: new window.kakao.maps.Point(15, 30) }
@@ -36,10 +44,18 @@ const Map = () => {
     // 마커 클릭 이벤트 등록
     window.kakao.maps.event.addListener(marker, 'click', () => {
       const position = marker.getPosition()
-      const lat = position.getLat().toFixed()
+      const lat = position.getLat()
       const lng = position.getLng()
-      setMarkerPosition([lat, lng])
-      console.log('lat', lat, 'lng', lng)
+
+      setInfo({
+        PKLT_NM: name,
+        ADDR: address,
+        TPKCT: entireParkingSpot,
+        NOW_PRK_VHCL_CNT: ableParkingSpot,
+        PRK_TYPE_NM: type,
+        BSC_PRK_CRG: price,
+      })
+
       const projection = map.getProjection()
       const point = projection.pointFromCoords(position)
 
@@ -47,14 +63,6 @@ const Map = () => {
         x: point.x,
         y: point.y,
       })
-      for (let item in data) {
-        console.log(data[item].LAT === lat)
-      }
-      // const markerData = data.find(item => item.LAT === lat)
-      // if (markerData) {
-      //   setInfo(markerData)
-      //   console.log(markerData)
-      // }
       setIsModal(true)
     })
     window.kakao.maps.event.addListener(map, 'click', () => {
@@ -83,35 +91,43 @@ const Map = () => {
     setMap(initializedMap) // map 상태 업데이트
 
     const getData = async () => {
-      const tmp = await fetchParkingData()
-      setData(tmp)
+      const initialData = await fetchParkingData()
+      setData(initialData)
     }
     getData()
-    console.log('1: Map')
   }, [])
 
   useEffect(() => {
+    console.log('CHANGE')
     if (map && data) {
       data.forEach(elem => {
         const lat = Number(elem.LAT)
         const lot = Number(elem.LOT)
-        displayMarker(lat, lot) // 마커 표시
+        const name = elem.PKLT_NM
+        const address = elem.ADDR
+        const entireParkingSpot = elem.TPKCT
+        const ableParkingSpot = elem.NOW_PRK_VHCL_CNT
+        const type = elem.PRK_TYPE_NM
+        const price = elem.BSC_PRK_CRG
+        displayMarker(
+          lat,
+          lot,
+          name,
+          address,
+          entireParkingSpot,
+          ableParkingSpot,
+          type,
+          price
+        ) // 마커 표시
       })
+      console.log('CHANGE COMPLETE')
     }
   }, [data, map]) // data와 map이 변경될 때마다 실행
 
   return (
     <>
       <MapContainer id="map" />
-      {isModal && (
-        <Modal
-          position={markerScreenPosition}
-          markerPosition={markerPosition}
-          data={data}
-          info={info}
-          setInfo={setInfo}
-        />
-      )}
+      {isModal && <Modal position={markerScreenPosition} info={info} />}
     </>
   )
 }

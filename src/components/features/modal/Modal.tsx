@@ -62,10 +62,7 @@ const Container = styled.div({
 
 const Modal = ({
   position,
-  markerPosition,
-  data,
   info,
-  setInfo,
 }: {
   position: { x: number; y: number } | null
 }) => {
@@ -78,7 +75,6 @@ const Modal = ({
       setModalWidth(modalRef.current.offsetWidth)
       setModalHeight(modalRef.current.offsetHeight)
     }
-    console.log('2: ON MODAL REF')
   }, [position])
 
   return (
