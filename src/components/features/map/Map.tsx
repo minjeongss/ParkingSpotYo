@@ -22,12 +22,43 @@ const Map = () => {
     }
 
     // 종로구 중심: 37.595829, 126.977207
+    // 서초구 중심: 37.476471, 127.031244
     const options = {
       center: new window.kakao.maps.LatLng(37.595829, 126.977207),
       level: 5,
     }
 
     const initializedMap = new window.kakao.maps.Map(container, options)
+
+    // 지도가 이동, 확대, 축소로 인해 중심좌표가 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+    window.kakao.maps.event.addListener(
+      initializedMap,
+      'center_changed',
+      () => {
+        // 지도의  레벨을 얻어옵니다
+        const level = initializedMap.getLevel()
+
+        // 지도의 중심좌표를 얻어옵니다
+        const latlng = initializedMap.getCenter()
+        const bounds = initializedMap.getBounds()
+        // 영역의 남서쪽 좌표를 얻어옵니다
+        const swLatLng = bounds.getSouthWest() // 작은 영역
+        const south = swLatLng.getLat()
+        const west = swLatLng.getLng()
+
+        // 영역의 북동쪽 좌표를 얻어옵니다
+        const neLatLng = bounds.getNorthEast() // 큰 영역
+        const north = neLatLng.getLat()
+        const east = neLatLng.getLng()
+        if (level >= 7) alert('최대 확대입니다!')
+        //37.476471, 127.031244
+        const newCenterLat = 37.476471
+        const newCenterLng = 127.031244
+        if (newCenterLat >= south && newCenterLat <= north) {
+          alert('서초구!')
+        }
+      }
+    )
     setMap(initializedMap) // map 상태 업데이트
 
     const getData = async () => {
