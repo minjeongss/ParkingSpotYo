@@ -28,7 +28,7 @@ const StaticMap = ({ info }: { info: ParkingInfo }) => {
       staticMapContainer,
       staticMapOption
     )
-  }, [])
+  }, [info.LAT, info.LOT])
   return <MapContainer id="staticMap" />
 }
 

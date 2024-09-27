@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import useBearStore from '../../../stores/bearStore'
 import StarIcon from '../../../assets/star.svg?react'
 import MarkerIcon from '../../../assets/marker.svg?react'
 import { ParkingInfo } from '../../../types/api'
@@ -32,7 +33,8 @@ const Modal = ({
       setModalHeight(modalRef.current.offsetHeight)
     }
   }, [position])
-
+  const bears = useBearStore(state => state.bears)
+  const increasePopulation = useBearStore(state => state.increasePopulation)
   return (
     <ModalContainer
       position={position}
@@ -59,6 +61,10 @@ const Modal = ({
           상세보기
         </DetailBtn>
       </Container>
+      <h1>{bears}</h1>
+      <button type="button" onClick={increasePopulation}>
+        bears UP!
+      </button>
     </ModalContainer>
   )
 }
