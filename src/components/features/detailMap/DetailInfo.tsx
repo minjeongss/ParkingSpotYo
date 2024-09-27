@@ -6,6 +6,7 @@ import AlignBoldText from './AlignBoldText'
 import AlignLightText from './AlignLightText'
 import AlignExtraLightText from './AlignExtraLightText'
 import AlignRightText from './AlignRightText'
+import formatTime from '../../../utils/formatTime'
 
 const InfoContainer = styled.div({
   width: '90%',
@@ -15,25 +16,61 @@ const DotLine = styled.hr({
   borderTop: '2px dotted #5E5D5D',
   margin: '1rem 0',
 })
-const DetailInfo = () => {
+const DetailInfo = ({ info }) => {
   return (
     <InfoContainer>
-      <AlignIcon name="주차장 이름" />
-      <AlignExtraLightText type="정보 업데이트" data="2021-11-11 11:11" />
+      <AlignIcon name={info.PKLT_NM} />
+      <AlignExtraLightText
+        type="정보 업데이트"
+        data={
+          info.NOW_PRK_VHCL_UPDT_TM === ''
+            ? '정보 제공 없음'
+            : info.NOW_PRK_VHCL_UPDT_TM
+        }
+      />
       <DotLine />
-      <AlignBoldText data="현재 주차 가능 6대 / 전체 주차공간 33대" />
-      <AlignText type="종류" data="노상" />
-      <AlignText type="주소" data="서울 송파구 중대로 105" />
-      <AlignText type="전화번호" data="02-420-1234" />
-      <AlignText type="요금 정보" data="유료 (토요일 무료, 공휴일 무료)" />
-      <PriceTable basicPrice={30000} extraPrice={30000} maxPrice={30000} />
-      <AlignRightText />
-      <AlignText type="정기권 금액" data="98,000원" />
+      <AlignBoldText
+        data={`현재 주차 가능 ${info.NOW_PRK_VHCL_CNT}대 / 전체 주차공간 ${info.TPKCT}대`}
+      />
+      <AlignText type="종류" data={info.PRK_TYPE_NM} />
+      <AlignText type="주소" data={info.ADDR} />
+      <AlignText type="전화번호" data={info.TELNO} />
+      <AlignText
+        type="요금 정보"
+        data={`${info.PAY_YN_NM} (토요일 ${info.SAT_CHGD_FREE_NM}, 공휴일 ${info.LHLDY_CHGD_FREE_SE_NAME})`}
+      />
+      <PriceTable
+        basicPrice={info.BSC_PRK_CRG}
+        extraPrice={info.ADD_PRK_CRG}
+        maxPrice={info.DAY_MAX_CRG}
+      />
+      {!info.SAT_CHGD_FREE_SE && !info.LHLDY_CHGD_FREE_SE && (
+        <AlignRightText
+          satFree={info.SAT_CHGD_FREE_NM}
+          lhldyFree={info.LHLDY_CHGD_FREE_SE_NAME}
+        />
+      )}
+      <AlignText
+        type="정기권 금액"
+        data={`${info.PRD_AMT === '' ? '정보 제공 없음' : info.PRD_AMT + '원'}`}
+      />
       <AlignBoldText data="운영시간" />
-      <AlignLightText type="평일" data="05:00~23:00" />
-      <AlignLightText type="토요일" data="05:00~23:00" />
-      <AlignLightText type="일요일/공휴일" data="05:00~23:00" />
-      <AlignText type="야간개방" data="미개방" />
+      <AlignLightText
+        type="평일"
+        data={`${formatTime(info.WD_OPER_BGNG_TM)}~${formatTime(info.WD_OPER_END_TM)}`}
+      />
+      <AlignLightText
+        type="주말"
+        data={`${formatTime(info.WE_OPER_BGNG_TM)}~${formatTime(info.WE_OPER_END_TM)}`}
+      />
+      <AlignLightText
+        type="공휴일"
+        data={`${formatTime(info.LHLDY_OPER_BGNG_TM)}~${formatTime(info.LHLDY_OPER_END_TM)}`}
+      />
+      <AlignText
+        type="야간개방"
+        data={info.NGHT_PAY_YN_NM.replace('야간', '').trim()}
+      />
     </InfoContainer>
   )
 }

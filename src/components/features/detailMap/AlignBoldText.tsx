@@ -4,7 +4,7 @@ const Container = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '0 0 1rem 0',
+  margin: '0 0 1rem 0',
 })
 const Text = styled.p({
   color: 'rgba(0,0,0,0.54)',

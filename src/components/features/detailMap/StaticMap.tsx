@@ -5,7 +5,7 @@ const MapContainer = styled.div({
   width: '100%',
   height: '20vh',
 })
-const StaticMap = () => {
+const StaticMap = ({ info }) => {
   useEffect(() => {
     const staticMapContainer = document.getElementById('staticMap')
     if (!staticMapContainer) {
@@ -13,7 +13,7 @@ const StaticMap = () => {
     }
 
     // 이미지 지도에서 마커가 표시될 위치입니다
-    const markerPosition = new window.kakao.maps.LatLng(33.450701, 126.570667)
+    const markerPosition = new window.kakao.maps.LatLng(info.LAT, info.LOT)
 
     // 이미지 지도에 표시할 마커입니다
     // 이미지 지도에 표시할 마커는 Object 형태입니다
@@ -21,7 +21,7 @@ const StaticMap = () => {
       position: markerPosition,
     }
     const staticMapOption = {
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+      center: new window.kakao.maps.LatLng(info.LAT, info.LOT),
       level: 3, // 이미지 지도의 확대 레벨
       marker,
     }

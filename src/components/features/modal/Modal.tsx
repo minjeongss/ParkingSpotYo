@@ -77,6 +77,7 @@ const Modal = ({
   const [modalWidth, setModalWidth] = useState<number>(0)
   const [modalHeight, setModalHeight] = useState<number>(0)
   const navigate = useNavigate()
+
   useEffect(() => {
     if (modalRef.current) {
       setModalWidth(modalRef.current.offsetWidth)
@@ -106,7 +107,9 @@ const Modal = ({
         <ParkingTypeText>
           {info?.PRK_TYPE_NM} / 기본요금 {info?.BSC_PRK_CRG ?? 0}원
         </ParkingTypeText>
-        <DetailBtn onClick={() => navigate('/detail')}>상세보기</DetailBtn>
+        <DetailBtn onClick={() => navigate('/detail', { state: info })}>
+          상세보기
+        </DetailBtn>
       </Container>
     </ModalContainer>
   )

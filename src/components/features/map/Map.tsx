@@ -49,14 +49,10 @@ const Map = () => {
 
   useEffect(() => {
     const displayMarker = (
-      x: number,
-      y: number,
-      name: string,
-      address: string,
-      entireParkingSpot: number,
-      ableParkingSpot: number,
-      type: string,
-      price: number
+      lat: number,
+      lot: number,
+
+      elem
     ) => {
       const imageSrc = '/src/assets/marker.svg'
       const imageSize = new window.kakao.maps.Size(30, 30)
@@ -64,7 +60,7 @@ const Map = () => {
 
       const marker = new window.kakao.maps.Marker({
         map, // 현재 map 객체 사용
-        position: new window.kakao.maps.LatLng(x, y),
+        position: new window.kakao.maps.LatLng(lat, lot),
         image: new window.kakao.maps.MarkerImage(
           imageSrc,
           imageSize,
@@ -75,20 +71,11 @@ const Map = () => {
       // 마커 클릭 이벤트 등록
       window.kakao.maps.event.addListener(marker, 'click', () => {
         const position = marker.getPosition()
-
-        setInfo({
-          PKLT_NM: name,
-          ADDR: address,
-          TPKCT: entireParkingSpot,
-          NOW_PRK_VHCL_CNT: ableParkingSpot,
-          PRK_TYPE_NM: type,
-          BSC_PRK_CRG: price,
-        })
+        setInfo(elem)
 
         const projection = map?.getProjection()
         if (projection) {
           const point = projection.pointFromCoords(position)
-
           setMarkerScreenPosition({
             x: point.x,
             y: point.y,
@@ -109,22 +96,7 @@ const Map = () => {
       data.forEach(elem => {
         const lat = Number(elem.LAT)
         const lot = Number(elem.LOT)
-        const name = elem.PKLT_NM
-        const address = elem.ADDR
-        const entireParkingSpot = elem.TPKCT
-        const ableParkingSpot = elem.NOW_PRK_VHCL_CNT
-        const type = elem.PRK_TYPE_NM
-        const price = elem.BSC_PRK_CRG
-        displayMarker(
-          lat,
-          lot,
-          name,
-          address,
-          entireParkingSpot,
-          ableParkingSpot,
-          type,
-          price
-        ) // 마커 표시
+        displayMarker(lat, lot, elem) // 마커 표시
       })
     }
   }, [data, map]) // data와 map이 변경될 때마다 실행

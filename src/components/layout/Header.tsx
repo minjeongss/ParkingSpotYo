@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
-import Logo from '../../../public/logo.svg?react'
+import Logo from '../../assets/logo.svg?react'
 import MapIcon from '../../assets/map.svg?react'
 
 const Container = styled.div({

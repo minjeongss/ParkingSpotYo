@@ -9,10 +9,12 @@ const Text = styled.p({
   color: 'rgba(225, 40, 40, 0.54)',
   fontSize: '20px',
 })
-const AlignRightText = () => {
+const AlignRightText = ({ satFree, lhldyFree }) => {
   return (
     <Container>
-      <Text>* 토요일 무료 / 공휴일 무료</Text>
+      <Text>
+        * 토요일 {satFree} / 공휴일 {lhldyFree}
+      </Text>
     </Container>
   )
 }

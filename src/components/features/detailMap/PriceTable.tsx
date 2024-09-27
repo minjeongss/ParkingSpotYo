@@ -5,6 +5,7 @@ const Table = styled.table({
   background: '#F5F5F5',
   borderCollapse: 'collapse',
   color: 'rgba(0, 0, 0 , 0.54)',
+  margin: '0 0 1rem 0',
 })
 
 const Th = styled.th({

@@ -5,7 +5,7 @@ const Container = styled.div({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '1rem 0 1rem 0',
+  margin: '1rem 0 1rem 0',
 })
 const H1 = styled.h1({
   color: '#0875F5',
