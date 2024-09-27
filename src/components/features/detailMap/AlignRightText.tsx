@@ -1,6 +1,12 @@
 import { RightContainer, RightText } from '../../../styles/DetailMapStyles'
 
-const AlignRightText = ({ satFree, lhldyFree }) => {
+const AlignRightText = ({
+  satFree,
+  lhldyFree,
+}: {
+  satFree: string
+  lhldyFree: string
+}) => {
   return (
     <RightContainer>
       <RightText>

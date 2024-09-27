@@ -44,12 +44,3 @@ export interface ParkingInfo {
   SHRN_PKLT_YN: string
   SHRN_PKLT_ETC: string
 }
-
-export interface ParkingInfoPartial {
-  PKLT_NM: string
-  ADDR: string
-  TPKCT: number
-  NOW_PRK_VHCL_CNT: number
-  PRK_TYPE_NM: string
-  BSC_PRK_CRG: number
-}

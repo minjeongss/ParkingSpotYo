@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { MapContainer } from '../../../styles/DetailMapStyles'
+import { ParkingInfo } from '../../../types/api'
 
-const StaticMap = ({ info }) => {
+const StaticMap = ({ info }: { info: ParkingInfo }) => {
   useEffect(() => {
     const staticMapContainer = document.getElementById('staticMap')
     if (!staticMapContainer) {

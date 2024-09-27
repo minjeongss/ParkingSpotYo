@@ -7,8 +7,9 @@ import AlignExtraLightText from './AlignExtraLightText'
 import AlignRightText from './AlignRightText'
 import formatTime from '../../../utils/formatTime'
 import { InfoContainer, DotLine } from '../../../styles/DetailMapStyles'
+import { ParkingInfo } from '../../../types/api'
 
-const DetailInfo = ({ info }) => {
+const DetailInfo = ({ info }: { info: ParkingInfo }) => {
   return (
     <InfoContainer>
       <AlignIcon name={info.PKLT_NM} />
@@ -44,7 +45,7 @@ const DetailInfo = ({ info }) => {
       )}
       <AlignText
         type="정기권 금액"
-        data={`${info.PRD_AMT === '' ? '정보 제공 없음' : info.PRD_AMT + '원'}`}
+        data={`${info.PRD_AMT === '' ? '정보 제공 없음' : `${info.PRD_AMT}원`}`}
       />
       <AlignBoldText data="운영시간" />
       <AlignLightText

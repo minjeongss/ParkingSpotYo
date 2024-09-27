@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Modal from '../modal/Modal'
 import { fetchParkingData } from '../../../services/apiService'
-import { ParkingInfo, ParkingInfoPartial } from '../../../types/api'
+import { ParkingInfo } from '../../../types/api'
 import { MapInstance } from '../../../types/kakao'
 import MapContainer from '../../../styles/MapStyles'
 
@@ -13,7 +13,7 @@ const Map = () => {
   const [isModal, setIsModal] = useState<boolean>(false)
   const [data, setData] = useState<ParkingInfo[] | null>(null)
   const [map, setMap] = useState<MapInstance | null>(null) // map 상태 추가
-  const [info, setInfo] = useState<ParkingInfoPartial | null>(null)
+  const [info, setInfo] = useState<ParkingInfo | null>(null)
 
   useEffect(() => {
     const container = document.getElementById('map')
@@ -43,7 +43,7 @@ const Map = () => {
   }, [])
 
   useEffect(() => {
-    const displayMarker = (lat: number, lot: number, elem) => {
+    const displayMarker = (lat: number, lot: number, elem: ParkingInfo) => {
       const imageSrc = '/src/assets/marker.svg'
       const imageSize = new window.kakao.maps.Size(30, 30)
       const imageOption = { offset: new window.kakao.maps.Point(15, 30) }

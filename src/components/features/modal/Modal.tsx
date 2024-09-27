@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import StarIcon from '../../../assets/star.svg?react'
 import MarkerIcon from '../../../assets/marker.svg?react'
-import { ParkingInfoPartial } from '../../../types/api'
+import { ParkingInfo } from '../../../types/api'
 import {
   ModalContainer,
   ParkingNameText,
@@ -18,7 +18,7 @@ const Modal = ({
   info,
 }: {
   position: { x: number; y: number } | null
-  info: ParkingInfoPartial | null
+  info: ParkingInfo | null
 }) => {
   // 마커 중앙정렬 기능
   const modalRef = useRef<HTMLDivElement | null>(null)
