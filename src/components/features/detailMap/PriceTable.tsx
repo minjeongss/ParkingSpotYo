@@ -1,24 +1,4 @@
-import styled from '@emotion/styled'
-
-const Table = styled.table({
-  width: '100%',
-  background: '#F5F5F5',
-  borderCollapse: 'collapse',
-  color: 'rgba(0, 0, 0 , 0.54)',
-  margin: '0 0 1rem 0',
-})
-
-const Th = styled.th({
-  textAlign: 'center',
-  padding: '10px',
-  border: '1px solid #D9D9D9',
-})
-
-const Td = styled.td({
-  textAlign: 'center',
-  padding: '10px',
-  border: '1px solid #D9D9D9',
-})
+import { Table, Th, Td } from '../../../styles/DetailMapStyles'
 
 const PriceTable = ({
   basicPrice,

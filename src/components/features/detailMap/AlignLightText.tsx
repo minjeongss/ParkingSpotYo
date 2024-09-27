@@ -1,21 +1,11 @@
-import styled from '@emotion/styled'
+import { LightContainer, LightText } from '../../../styles/DetailMapStyles'
 
-const Container = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  margin: '0 0 0.5rem 0',
-})
-const Text = styled.p({
-  color: 'rgba(0,0,0,0.54)',
-  fontSize: '20px',
-})
 const AlignLightText = ({ type, data }: { type: string; data: string }) => {
   return (
-    <Container>
-      <Text>{type}</Text>
-      <Text>{data}</Text>
-    </Container>
+    <LightContainer>
+      <LightText>{type}</LightText>
+      <LightText>{data}</LightText>
+    </LightContainer>
   )
 }
 

@@ -1,10 +1,6 @@
-import styled from '@emotion/styled'
 import { useEffect } from 'react'
+import { MapContainer } from '../../../styles/DetailMapStyles'
 
-const MapContainer = styled.div({
-  width: '100%',
-  height: '20vh',
-})
 const StaticMap = ({ info }) => {
   useEffect(() => {
     const staticMapContainer = document.getElementById('staticMap')

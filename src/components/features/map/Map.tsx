@@ -1,14 +1,9 @@
-import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import Modal from '../modal/Modal'
 import { fetchParkingData } from '../../../services/apiService'
 import { ParkingInfo, ParkingInfoPartial } from '../../../types/api'
 import { MapInstance } from '../../../types/kakao'
-
-const MapContainer = styled.div({
-  width: '100%',
-  height: '100vh',
-})
+import MapContainer from '../../../styles/MapStyles'
 
 const Map = () => {
   const [markerScreenPosition, setMarkerScreenPosition] = useState<{
@@ -48,12 +43,7 @@ const Map = () => {
   }, [])
 
   useEffect(() => {
-    const displayMarker = (
-      lat: number,
-      lot: number,
-
-      elem
-    ) => {
+    const displayMarker = (lat: number, lot: number, elem) => {
       const imageSrc = '/src/assets/marker.svg'
       const imageSize = new window.kakao.maps.Size(30, 30)
       const imageOption = { offset: new window.kakao.maps.Point(15, 30) }

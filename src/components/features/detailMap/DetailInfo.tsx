@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import AlignIcon from './AlignIcon'
 import AlignText from './AlignText'
 import PriceTable from './PriceTable'
@@ -7,15 +6,8 @@ import AlignLightText from './AlignLightText'
 import AlignExtraLightText from './AlignExtraLightText'
 import AlignRightText from './AlignRightText'
 import formatTime from '../../../utils/formatTime'
+import { InfoContainer, DotLine } from '../../../styles/DetailMapStyles'
 
-const InfoContainer = styled.div({
-  width: '90%',
-})
-const DotLine = styled.hr({
-  border: 'none',
-  borderTop: '2px dotted #5E5D5D',
-  margin: '1rem 0',
-})
 const DetailInfo = ({ info }) => {
   return (
     <InfoContainer>

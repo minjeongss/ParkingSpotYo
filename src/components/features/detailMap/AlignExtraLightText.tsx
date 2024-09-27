@@ -1,14 +1,8 @@
-import styled from '@emotion/styled'
+import {
+  ExtraLightContainer,
+  ExtraLightText,
+} from '../../../styles/DetailMapStyles'
 
-const Container = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-})
-const Text = styled.p({
-  color: 'rgba(0,0,0,0.54)',
-  fontSize: '18px',
-})
 const AlignExtraLightText = ({
   type,
   data,
@@ -17,10 +11,10 @@ const AlignExtraLightText = ({
   data: string
 }) => {
   return (
-    <Container>
-      <Text>{type}</Text>
-      <Text>{data}</Text>
-    </Container>
+    <ExtraLightContainer>
+      <ExtraLightText>{type}</ExtraLightText>
+      <ExtraLightText>{data}</ExtraLightText>
+    </ExtraLightContainer>
   )
 }
 
