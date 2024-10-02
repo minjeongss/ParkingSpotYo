@@ -64,23 +64,18 @@ const Map = () => {
         // custom overlay
         const content = document.createElement('div')
         content.innerHTML = `
-        <div class="wrap">
-          <div class="info">
-            <div class="title">
-              ${elem.PKLT_NM}
-              <div class="close" onclick="window.dispatchEvent(new CustomEvent('closeOverlay'));" title="닫기"></div>
+          <div class="overlayConainer">
+            <div class="top">
+              <p class="nameText">${elem.PKLT_NM}</p>
+              <button class="closeBtn">닫기</button>
             </div>
-            <div class="body">
-              <div class="desc">
-                <div class="ellipsis">${elem.ADDR}</div>
-                <div class="jibun ellipsis">현재 주차 가능 대수: ${elem.TPKCT - elem.NOW_PRK_VHCL_CNT}</div>
-                <div>${elem.PRK_TYPE_NM} / 기본요금 ${elem.BSC_PRK_CRG ?? 0}원</div>
-              </div>
-              <button id="closeOverlayBtn">닫기</button>
-              <button id="detailOverlayBtn">상세보기</button>
+            <p class="addressText">${elem.ADDR}</p>
+            <p class="numberText">현재 주차 가능 대수: ${elem.TPKCT - elem.NOW_PRK_VHCL_CNT}</p>
+            <div class="bottom">
+              <p class="typeText">${elem.PRK_TYPE_NM} / 기본요금 ${elem.BSC_PRK_CRG}원</p>
+              <button class="detailBtn">상세보기</button>
             </div>
           </div>
-        </div>
         `
         const customOverlay = new window.kakao.maps.CustomOverlay({
           map,
@@ -96,7 +91,7 @@ const Map = () => {
           currentOverlayRef.current = null // 오버레이 제거 시 상태도 초기화
         }
         const closeOverlayBtn = content.querySelector(
-          '#closeOverlayBtn'
+          '.closeBtn'
         ) as HTMLButtonElement
         if (closeOverlayBtn) {
           closeOverlayBtn.onclick = () => {
@@ -104,7 +99,7 @@ const Map = () => {
           }
         }
         const detailOverlayBtn = content.querySelector(
-          '#detailOverlayBtn'
+          '.detailBtn'
         ) as HTMLButtonElement
         if (detailOverlayBtn) {
           detailOverlayBtn.onclick = () => {

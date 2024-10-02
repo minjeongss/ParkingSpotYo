@@ -1,0 +1,64 @@
+.overlayConainer {
+  position: absolute;
+  left: 0;
+  bottom: 50px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 999;
+  min-width: 250px;
+}
+.overlayConainer::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 20px 15px 0 15px;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
+}
+.top,
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6rem;
+}
+.top .nameText {
+  color: #0875f5;
+  font-weight: bold;
+  font-size: 25px;
+}
+.top .closeBtn {
+  color: #4395f6;
+  font-size: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.addressText {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 18px;
+}
+.numberText {
+  color: #4395f6;
+  font-weight: bold;
+  font-size: 20px;
+}
+.bottom .typeText {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 15px;
+}
+.bottom .detailBtn {
+  color: #4395f6;
+  font-size: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
