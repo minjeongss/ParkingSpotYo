@@ -11,6 +11,9 @@ declare global {
           options?: { offset?: Point }
         ) => MarkerImageInstance
         InfoWindow: new (content: string | object) => InfoInstance
+        CustomOverlay: new (
+          options?: CustomOverlayOptions
+        ) => CustomOverlayInstance
         StaticMap: new (
           staticMapContainer: HTMLElement,
           staticMapOption: MapOptions
@@ -92,6 +95,17 @@ interface InfoInstance {
   open: (map: MapInstance, marker: MarkerInstance) => void
   close: () => void
   setContent: (content: string | HTMLElement | Element) => void
+}
+
+// 마커 커스텀 오버레이 설정
+interface CustomOverlayOptions {
+  map: MapInstance | null
+  position: LatLngInstance
+  content: HTMLElement | string
+  yAnchor?: number // yAnchor는 선택적 속성입니다.
+}
+interface CustomOverlayInstance {
+  setMap: (map: MapInstance | null) => void
 }
 
 // 카테고리 제한 설정

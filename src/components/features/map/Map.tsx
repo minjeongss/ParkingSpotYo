@@ -1,19 +1,15 @@
-import { useEffect, useState } from 'react'
-import Modal from '../modal/Modal'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { fetchParkingData } from '../../../services/apiService'
 import { ParkingInfo } from '../../../types/api'
-import { MapInstance } from '../../../types/kakao'
+import { CustomOverlayInstance, MapInstance } from '../../../types/kakao'
 import MapContainer from '../../../styles/MapStyles'
 
 const Map = () => {
-  const [markerScreenPosition, setMarkerScreenPosition] = useState<{
-    x: number
-    y: number
-  } | null>(null)
-  const [isModal, setIsModal] = useState<boolean>(false)
+  const navigate = useNavigate()
   const [data, setData] = useState<ParkingInfo[] | null>(null)
   const [map, setMap] = useState<MapInstance | null>(null) // map 상태 추가
-  const [info, setInfo] = useState<ParkingInfo | null>(null)
+  const currentOverlayRef = useRef<CustomOverlayInstance | null>(null) // useRef로 오버레이 상태 추가
 
   useEffect(() => {
     const container = document.getElementById('map')
@@ -29,36 +25,6 @@ const Map = () => {
     }
 
     const initializedMap = new window.kakao.maps.Map(container, options)
-
-    // 지도가 이동, 확대, 축소로 인해 중심좌표가 변경되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
-    window.kakao.maps.event.addListener(
-      initializedMap,
-      'center_changed',
-      () => {
-        // 지도의  레벨을 얻어옵니다
-        const level = initializedMap.getLevel()
-
-        // 지도의 중심좌표를 얻어옵니다
-        const latlng = initializedMap.getCenter()
-        const bounds = initializedMap.getBounds()
-        // 영역의 남서쪽 좌표를 얻어옵니다
-        const swLatLng = bounds.getSouthWest() // 작은 영역
-        const south = swLatLng.getLat()
-        const west = swLatLng.getLng()
-
-        // 영역의 북동쪽 좌표를 얻어옵니다
-        const neLatLng = bounds.getNorthEast() // 큰 영역
-        const north = neLatLng.getLat()
-        const east = neLatLng.getLng()
-        if (level >= 7) alert('최대 확대입니다!')
-        //37.476471, 127.031244
-        const newCenterLat = 37.476471
-        const newCenterLng = 127.031244
-        if (newCenterLat >= south && newCenterLat <= north) {
-          alert('서초구!')
-        }
-      }
-    )
     setMap(initializedMap) // map 상태 업데이트
 
     const getData = async () => {
@@ -91,26 +57,60 @@ const Map = () => {
 
       // 마커 클릭 이벤트 등록
       window.kakao.maps.event.addListener(marker, 'click', () => {
-        const position = marker.getPosition()
-        setInfo(elem)
-
-        const projection = map?.getProjection()
-        if (projection) {
-          const point = projection.pointFromCoords(position)
-          setMarkerScreenPosition({
-            x: point.x,
-            y: point.y,
-          })
-          setIsModal(true)
+        // 이전 오버레이가 있으면 제거
+        if (currentOverlayRef.current) {
+          currentOverlayRef.current.setMap(null)
         }
-      })
-      window.kakao.maps.event.addListener(map, 'click', () => {
-        setIsModal(false)
-        setInfo(null)
-      })
-      window.kakao.maps.event.addListener(map, 'dragstart', () => {
-        setIsModal(false)
-        setInfo(null)
+        // custom overlay
+        const content = document.createElement('div')
+        content.innerHTML = `
+        <div class="wrap">
+          <div class="info">
+            <div class="title">
+              ${elem.PKLT_NM}
+              <div class="close" onclick="window.dispatchEvent(new CustomEvent('closeOverlay'));" title="닫기"></div>
+            </div>
+            <div class="body">
+              <div class="desc">
+                <div class="ellipsis">${elem.ADDR}</div>
+                <div class="jibun ellipsis">현재 주차 가능 대수: ${elem.TPKCT - elem.NOW_PRK_VHCL_CNT}</div>
+                <div>${elem.PRK_TYPE_NM} / 기본요금 ${elem.BSC_PRK_CRG ?? 0}원</div>
+              </div>
+              <button id="closeOverlayBtn">닫기</button>
+              <button id="detailOverlayBtn">상세보기</button>
+            </div>
+          </div>
+        </div>
+        `
+        const customOverlay = new window.kakao.maps.CustomOverlay({
+          map,
+          position: new window.kakao.maps.LatLng(lat, lot),
+          content,
+          yAnchor: 1,
+        })
+        // useRef를 통해 현재 오버레이 상태 업데이트
+        currentOverlayRef.current = customOverlay
+
+        const closeOverlay = () => {
+          customOverlay.setMap(null)
+          currentOverlayRef.current = null // 오버레이 제거 시 상태도 초기화
+        }
+        const closeOverlayBtn = content.querySelector(
+          '#closeOverlayBtn'
+        ) as HTMLButtonElement
+        if (closeOverlayBtn) {
+          closeOverlayBtn.onclick = () => {
+            closeOverlay() // closeOverlay 함수 호출
+          }
+        }
+        const detailOverlayBtn = content.querySelector(
+          '#detailOverlayBtn'
+        ) as HTMLButtonElement
+        if (detailOverlayBtn) {
+          detailOverlayBtn.onclick = () => {
+            navigate('/detailMap', { state: elem })
+          }
+        }
       })
     }
     if (map && data) {
@@ -120,14 +120,9 @@ const Map = () => {
         displayMarker(lat, lot, elem) // 마커 표시
       })
     }
-  }, [data, map]) // data와 map이 변경될 때마다 실행
+  }, [navigate, data, map]) // data와 map이 변경될 때마다 실행
 
-  return (
-    <>
-      <MapContainer id="map" />
-      {isModal && <Modal position={markerScreenPosition} info={info} />}
-    </>
-  )
+  return <MapContainer id="map" />
 }
 
 export default Map

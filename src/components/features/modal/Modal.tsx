@@ -57,7 +57,7 @@ const Modal = ({
         <ParkingTypeText>
           {info?.PRK_TYPE_NM} / 기본요금 {info?.BSC_PRK_CRG ?? 0}원
         </ParkingTypeText>
-        <DetailBtn onClick={() => navigate('/detail', { state: info })}>
+        <DetailBtn onClick={() => navigate('/detailMap', { state: info })}>
           상세보기
         </DetailBtn>
       </Container>
