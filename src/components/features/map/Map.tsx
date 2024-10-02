@@ -7,6 +7,7 @@ import {
   MapInstance,
   SearchAddrFromCoords,
   DisplayCenterInfo,
+  MarkerInstance,
 } from '../../../types/kakao'
 import MapContainer from '../../../styles/MapStyles'
 
@@ -14,8 +15,24 @@ const Map = () => {
   const navigate = useNavigate()
   const [data, setData] = useState<ParkingInfo[] | null>(null)
   const [map, setMap] = useState<MapInstance | null>(null) // map 상태 추가
+  const [currentRegion, setCurrentRegion] = useState<string | null>(null) // 현재 지역구 상태 추가
   const currentOverlayRef = useRef<CustomOverlayInstance | null>(null) // useRef로 오버레이 상태 추가
+  const markersRef = useRef<MarkerInstance[]>([])
 
+  const getData = async (region: string) => {
+    try {
+      const initialData = await fetchParkingData(region)
+      setData(initialData || null) // undefined일 경우 null로 설정
+    } catch (error) {
+      setData(null) // 오류 발생 시 null로 설정
+    }
+  }
+  const clearMarkers = () => {
+    markersRef.current.forEach(marker => {
+      marker.setMap(null)
+    })
+    markersRef.current = []
+  }
   useEffect(() => {
     const container = document.getElementById('map')
     if (!container) {
@@ -32,16 +49,9 @@ const Map = () => {
     const initializedMap = new window.kakao.maps.Map(container, options)
     setMap(initializedMap) // map 상태 업데이트
 
-    const getData = async () => {
-      try {
-        const initialData = await fetchParkingData()
-        setData(initialData || null) // undefined일 경우 null로 설정
-      } catch (error) {
-        setData(null) // 오류 발생 시 null로 설정
-      }
-    }
     // eslint-disable-next-line no-void
-    void getData()
+    void getData('종로구')
+    setCurrentRegion('종로구')
   }, [])
 
   useEffect(() => {
@@ -59,6 +69,7 @@ const Map = () => {
           imageOption
         ),
       })
+      markersRef.current.push(marker)
 
       // 마커 클릭 이벤트 등록
       window.kakao.maps.event.addListener(marker, 'click', () => {
@@ -133,7 +144,14 @@ const Map = () => {
         for (let i = 0; i < result.length; i++) {
           // 행정동의 region_type 값은 'H' 이므로
           if (result[i].region_type === 'H') {
-            console.log(result[i].address_name)
+            const newRegion = result[i].address_name.split(' ')[1]
+            console.log(newRegion, currentRegion)
+            if (newRegion !== currentRegion) {
+              setCurrentRegion(newRegion)
+              clearMarkers()
+              // eslint-disable-next-line no-void
+              void getData(newRegion)
+            }
             break
           }
         }
@@ -145,7 +163,7 @@ const Map = () => {
         searchAddrFromCoords(map.getCenter(), displayCenterInfo)
       })
     }
-  }, [map])
+  }, [map, currentRegion])
   return <MapContainer id="map" />
 }
 

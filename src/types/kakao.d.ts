@@ -71,7 +71,7 @@ interface MarkerOptions {
 }
 
 interface MarkerInstance {
-  setMap: (map: MapInstance) => void
+  setMap: (map: MapInstance | null) => void
   getPosition: () => LatLngInstance
 }
 
