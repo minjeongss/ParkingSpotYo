@@ -27,6 +27,7 @@ declare global {
         }
         services: {
           Places: new (map: MapInstance) => PlaceInstance
+          Geocoder: new () => GeocoderInstance
           Status: {
             OK: 'OK'
           }
@@ -51,6 +52,7 @@ interface MapOptions {
 
 interface MapInstance {
   setCenter: (latlng: LatLngInstance) => void
+  getCenter: () => LatLngInstance
   setLevel: (level: number) => void
   getProjection: () => {
     pointFromCoords: (position: LatLngInstance) => {
@@ -122,5 +124,28 @@ export interface Place {
   y: number
   x: number
 }
+
+// Geocoder
+interface GeocoderInstance {
+  coord2RegionCode: (
+    lng: number,
+    lat: number,
+    callback: (result: RegionCodeResult[], status: string) => void
+  ) => void
+}
+interface RegionCodeResult {
+  region_type: string
+  address_name: string
+}
+
+export type SearchAddrFromCoords = (
+  coords: LatLngInstance,
+  callback: (result: RegionCodeResult[], status: string) => void
+) => void
+
+export type DisplayCenterInfo = (
+  result: RegionCodeResult[],
+  status: string
+) => void
 
 export type PlacesSearchCallback = (data: Place[], status: string) => void

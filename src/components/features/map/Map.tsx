@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { fetchParkingData } from '../../../services/apiService'
 import { ParkingInfo } from '../../../types/api'
-import { CustomOverlayInstance, MapInstance } from '../../../types/kakao'
+import {
+  CustomOverlayInstance,
+  MapInstance,
+  SearchAddrFromCoords,
+  DisplayCenterInfo,
+} from '../../../types/kakao'
 import MapContainer from '../../../styles/MapStyles'
 
 const Map = () => {
@@ -117,6 +122,30 @@ const Map = () => {
     }
   }, [navigate, data, map]) // data와 map이 변경될 때마다 실행
 
+  useEffect(() => {
+    const geocoder = new window.kakao.maps.services.Geocoder()
+    const searchAddrFromCoords: SearchAddrFromCoords = (coords, callback) => {
+      geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback)
+    }
+    const displayCenterInfo: DisplayCenterInfo = (result, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < result.length; i++) {
+          // 행정동의 region_type 값은 'H' 이므로
+          if (result[i].region_type === 'H') {
+            console.log(result[i].address_name)
+            break
+          }
+        }
+      }
+    }
+    if (map) {
+      searchAddrFromCoords(map.getCenter(), displayCenterInfo)
+      window.kakao.maps.event.addListener(map, 'idle', () => {
+        searchAddrFromCoords(map.getCenter(), displayCenterInfo)
+      })
+    }
+  }, [map])
   return <MapContainer id="map" />
 }
 
