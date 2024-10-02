@@ -11,6 +11,7 @@ import {
 } from '../../../types/kakao'
 import MapContainer from '../../../styles/MapStyles'
 import SearchCurrentMap from './SearchCurrentMap'
+import MoveCurrentPosition from './MoveCurrentPosition'
 
 const Map = () => {
   const navigate = useNavigate()
@@ -169,6 +170,7 @@ const Map = () => {
     <div>
       <MapContainer id="map" />
       <SearchCurrentMap currentRegion={currentRegion} setData={setData} />
+      <MoveCurrentPosition />
     </div>
   )
 }
