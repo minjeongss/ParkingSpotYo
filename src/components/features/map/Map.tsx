@@ -10,6 +10,7 @@ import {
   MarkerInstance,
 } from '../../../types/kakao'
 import MapContainer from '../../../styles/MapStyles'
+import SearchCurrentMap from './SearchCurrentMap'
 
 const Map = () => {
   const navigate = useNavigate()
@@ -131,7 +132,7 @@ const Map = () => {
         displayMarker(lat, lot, elem) // 마커 표시
       })
     }
-  }, [navigate, data, map]) // data와 map이 변경될 때마다 실행
+  }, [navigate, data, map, currentRegion]) // data와 map이 변경될 때마다 실행
 
   useEffect(() => {
     const geocoder = new window.kakao.maps.services.Geocoder()
@@ -164,7 +165,12 @@ const Map = () => {
       })
     }
   }, [map, currentRegion])
-  return <MapContainer id="map" />
+  return (
+    <div>
+      <MapContainer id="map" />
+      <SearchCurrentMap currentRegion={currentRegion} setData={setData} />
+    </div>
+  )
 }
 
 export default Map
