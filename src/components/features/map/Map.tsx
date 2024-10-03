@@ -12,11 +12,14 @@ import {
 import MapContainer from '../../../styles/MapStyles'
 import SearchCurrentMap from './SearchCurrentMap'
 import MoveCurrentPosition from './MoveCurrentPosition'
+import useMap from '../../../hooks/useMap'
+import Toast from '../../common/Toast/Toast'
 
 const Map = () => {
   const navigate = useNavigate()
   const [data, setData] = useState<ParkingInfo[] | null>(null)
   const [map, setMap] = useState<MapInstance | null>(null) // map 상태 추가
+  const [isToast, setIsToast] = useState<boolean>(false)
   const currentOverlayRef = useRef<CustomOverlayInstance | null>(null) // useRef로 오버레이 상태 추가
   const markersRef = useRef<MarkerInstance[]>([])
   const currentRegion = useRef<string | null>(null)
@@ -37,24 +40,14 @@ const Map = () => {
   }
 
   useEffect(() => {
-    const container = document.getElementById('map')
-    if (!container) {
-      return
+    const initializedMap = useMap()
+    if (initializedMap) {
+      setMap(initializedMap) // map 상태 업데이트
+
+      // eslint-disable-next-line no-void
+      void getData('중구')
+      currentRegion.current = '중구'
     }
-
-    // 종로구 중심: 37.595829, 126.977207
-    // 서초구 중심: 37.476471, 127.031244
-    const options = {
-      center: new window.kakao.maps.LatLng(37.595829, 126.977207),
-      level: 5,
-    }
-
-    const initializedMap = new window.kakao.maps.Map(container, options)
-    setMap(initializedMap) // map 상태 업데이트
-
-    // eslint-disable-next-line no-void
-    void getData('종로구')
-    currentRegion.current = '종로구'
   }, [])
 
   useEffect(() => {
@@ -161,9 +154,14 @@ const Map = () => {
       }
     }
     if (map) {
-      searchAddrFromCoords(map.getCenter(), displayCenterInfo)
       window.kakao.maps.event.addListener(map, 'idle', () => {
         searchAddrFromCoords(map.getCenter(), displayCenterInfo)
+      })
+      window.kakao.maps.event.addListener(map, 'zoom_changed', () => {
+        const level = map.getLevel()
+        if (level >= 7) {
+          setIsToast(true)
+        }
       })
     }
   }, [map, currentRegion])
@@ -175,6 +173,13 @@ const Map = () => {
         setData={setData}
       />
       <MoveCurrentPosition map={map} />
+      {isToast && (
+        <Toast
+          message="⚠️ 최대의 확대입니다"
+          setIsToast={setIsToast}
+          map={map}
+        />
+      )}
     </div>
   )
 }

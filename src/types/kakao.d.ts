@@ -54,6 +54,7 @@ interface MapInstance {
   setCenter: (latlng: LatLngInstance) => void
   getCenter: () => LatLngInstance
   setLevel: (level: number) => void
+  getLevel: () => number
   getProjection: () => {
     pointFromCoords: (position: LatLngInstance) => {
       x: number
