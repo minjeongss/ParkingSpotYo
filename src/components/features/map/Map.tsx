@@ -17,10 +17,10 @@ const Map = () => {
   const navigate = useNavigate()
   const [data, setData] = useState<ParkingInfo[] | null>(null)
   const [map, setMap] = useState<MapInstance | null>(null) // map 상태 추가
-  // const [currentRegion, setCurrentRegion] = useState<string | null>(null) // 현재 지역구 상태 추가
   const currentOverlayRef = useRef<CustomOverlayInstance | null>(null) // useRef로 오버레이 상태 추가
   const markersRef = useRef<MarkerInstance[]>([])
   const currentRegion = useRef<string | null>(null)
+  const [test, setTest] = useState('')
 
   const getData = async (region: string) => {
     try {
@@ -36,6 +36,7 @@ const Map = () => {
     })
     markersRef.current = []
   }
+
   useEffect(() => {
     const container = document.getElementById('map')
     if (!container) {
