@@ -20,7 +20,6 @@ const Map = () => {
   const currentOverlayRef = useRef<CustomOverlayInstance | null>(null) // useRef로 오버레이 상태 추가
   const markersRef = useRef<MarkerInstance[]>([])
   const currentRegion = useRef<string | null>(null)
-  const [test, setTest] = useState('')
 
   const getData = async (region: string) => {
     try {
@@ -129,6 +128,7 @@ const Map = () => {
       })
     }
     if (map && data) {
+      clearMarkers()
       data.forEach(elem => {
         const lat = Number(elem.LAT)
         const lot = Number(elem.LOT)
@@ -170,7 +170,10 @@ const Map = () => {
   return (
     <div>
       <MapContainer id="map" />
-      <SearchCurrentMap currentRegion={currentRegion} setData={setData} />
+      <SearchCurrentMap
+        currentRegion={currentRegion.current}
+        setData={setData}
+      />
       <MoveCurrentPosition />
     </div>
   )
