@@ -1,4 +1,4 @@
-import { UpdateBtn, UpdateText } from '../../../styles/SearchCurrentMap'
+import { UpdateBtn, UpdateText } from '../../../styles/SearchCurrentMapStyles'
 import ArrowIcon from '../../../assets/arrow.svg?react'
 import { fetchParkingData } from '../../../services/apiService'
 import { ParkingInfo } from '../../../types/api'

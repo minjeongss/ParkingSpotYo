@@ -1,12 +1,13 @@
 import { Route, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import DetailPage from './pages/DetailPage'
 import Map from './components/features/map/Map'
-import DetailMap from './components/features/detailMap/DetailMap'
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Map />} />
-      <Route path="/detailMap" element={<DetailMap />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/detailMap" element={<DetailPage />} />
     </Routes>
   )
 }

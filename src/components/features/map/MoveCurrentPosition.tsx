@@ -1,7 +1,7 @@
 import {
   MoveContainer,
   StyledPositionIcon,
-} from '../../../styles/MoveCurrentPosition'
+} from '../../../styles/MoveCurrentPositionStyles'
 import { MapInstance } from '../../../types/kakao'
 
 interface MoveCurrentPositionProps {

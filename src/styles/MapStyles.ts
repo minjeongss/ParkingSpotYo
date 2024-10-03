@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 const MapContainer = styled.div({
-  width: '100%',
+  width: '70%',
   height: '100vh',
 })
 

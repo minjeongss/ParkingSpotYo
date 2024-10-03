@@ -166,8 +166,7 @@ const Map = () => {
     }
   }, [map, currentRegion])
   return (
-    <div>
-      <MapContainer id="map" />
+    <MapContainer id="map">
       <SearchCurrentMap
         currentRegion={currentRegion.current}
         setData={setData}
@@ -175,12 +174,12 @@ const Map = () => {
       <MoveCurrentPosition map={map} />
       {isToast && (
         <Toast
-          message="⚠️ 최대의 확대입니다"
+          message="⚠️ 더 이상 축소가 불가능합니다!"
           setIsToast={setIsToast}
           map={map}
         />
       )}
-    </div>
+    </MapContainer>
   )
 }
 
