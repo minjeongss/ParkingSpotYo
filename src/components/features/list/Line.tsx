@@ -1,11 +1,5 @@
-import styled from '@emotion/styled'
+import Hr from '../../../styles/LineStyles'
 
-const Hr = styled.hr({
-  height: '1px',
-  background: '#D9D9D9',
-  border: 0,
-  margin: '1rem 0 1rem 0',
-})
 const Line = () => {
   return <Hr />
 }

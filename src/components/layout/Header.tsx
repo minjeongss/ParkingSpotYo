@@ -1,22 +1,8 @@
-import styled from '@emotion/styled'
 import { useNavigate } from 'react-router-dom'
 import Logo from '../../assets/logo.svg?react'
 import MapIcon from '../../assets/map.svg?react'
+import { Container, LogoContainer } from '../../styles/DetailHeaderStyles'
 
-const Container = styled.div({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  maxWidth: '1280px',
-  padding: '1rem 0 1rem 0',
-  margin: 'auto',
-})
-const LogoContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  gap: '1rem',
-})
 const Header = () => {
   const navigate = useNavigate()
   return (
