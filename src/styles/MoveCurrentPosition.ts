@@ -11,6 +11,7 @@ export const MoveContainer = styled.div({
   boxShadow: '0 4px 4px rgba(0, 0, 0, 0.25)',
   borderRadius: '50%',
   padding: '0.5rem',
+  cursor: 'pointer',
 })
 export const StyledPositionIcon = styled(PositionIcon)({
   fill: '#000000',

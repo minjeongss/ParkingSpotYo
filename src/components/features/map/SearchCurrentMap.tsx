@@ -18,6 +18,7 @@ const SearchCurrentMap = ({
       setData(initialData || null) // undefined일 경우 null로 설정
     } catch (error) {
       setData(null) // 오류 발생 시 null로 설정
+      // eslint-disable-next-line no-console
       console.error('Error fetching parking data:', error) // 에러 로그 추가
     }
   }

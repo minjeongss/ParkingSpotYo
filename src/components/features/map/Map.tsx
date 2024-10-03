@@ -174,7 +174,7 @@ const Map = () => {
         currentRegion={currentRegion.current}
         setData={setData}
       />
-      <MoveCurrentPosition />
+      <MoveCurrentPosition map={map} />
     </div>
   )
 }
