@@ -17,9 +17,10 @@ const Map = () => {
   const navigate = useNavigate()
   const [data, setData] = useState<ParkingInfo[] | null>(null)
   const [map, setMap] = useState<MapInstance | null>(null) // map 상태 추가
-  const [currentRegion, setCurrentRegion] = useState<string | null>(null) // 현재 지역구 상태 추가
+  // const [currentRegion, setCurrentRegion] = useState<string | null>(null) // 현재 지역구 상태 추가
   const currentOverlayRef = useRef<CustomOverlayInstance | null>(null) // useRef로 오버레이 상태 추가
   const markersRef = useRef<MarkerInstance[]>([])
+  const currentRegion = useRef<string | null>(null)
 
   const getData = async (region: string) => {
     try {
@@ -53,7 +54,7 @@ const Map = () => {
 
     // eslint-disable-next-line no-void
     void getData('종로구')
-    setCurrentRegion('종로구')
+    currentRegion.current = '종로구'
   }, [])
 
   useEffect(() => {
@@ -147,9 +148,8 @@ const Map = () => {
           // 행정동의 region_type 값은 'H' 이므로
           if (result[i].region_type === 'H') {
             const newRegion = result[i].address_name.split(' ')[1]
-            console.log(newRegion, currentRegion)
-            if (newRegion !== currentRegion) {
-              setCurrentRegion(newRegion)
+            if (newRegion !== currentRegion.current) {
+              currentRegion.current = newRegion
               clearMarkers()
               // eslint-disable-next-line no-void
               void getData(newRegion)
