@@ -1,11 +1,7 @@
 import { create } from 'zustand'
 import { ParkingInfo } from '../types/api'
 
-interface StarItem
-  extends Pick<
-    ParkingInfo,
-    'PKLT_NM' | 'ADDR' | 'PRK_TYPE_NM' | 'BSC_PRK_CRG'
-  > {
+export interface StarItem extends ParkingInfo {
   id: number
 }
 interface State {
@@ -16,7 +12,7 @@ interface State {
 interface Actions {
   actions: {
     toggleStar: (newIsStar: boolean) => void
-    addStar: (newStar: Omit<StarItem, 'id'>) => void
+    addStar: (newStar: StarItem) => void
     deletePartStar: (id: number) => void
     deleteAllStar: () => void
   }
@@ -24,10 +20,7 @@ interface Actions {
 
 const useStarStore = create<State & Actions>(set => ({
   isStar: false,
-  star: [
-    { id: 1, PKLT_NM: 'A', ADDR: 'A', PRK_TYPE_NM: 'A', BSC_PRK_CRG: 4 },
-    { id: 2, PKLT_NM: 'A', ADDR: 'A', PRK_TYPE_NM: 'A', BSC_PRK_CRG: 4 },
-  ],
+  star: null,
   actions: {
     toggleStar: newIsStar => set({ isStar: newIsStar }),
     addStar: newStar =>

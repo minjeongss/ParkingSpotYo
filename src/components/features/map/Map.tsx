@@ -16,6 +16,7 @@ import useMap from '../../../hooks/useMap'
 import Toast from '../../common/Toast/Toast'
 import useParkingInfoStore from '../../../stores/parkingInfoStore'
 import useMapStore from '../../../stores/mapStore'
+import useStarStore from '../../../stores/starStore'
 
 const Map = () => {
   const navigate = useNavigate()
@@ -29,6 +30,7 @@ const Map = () => {
   const setParkingData = useParkingInfoStore(
     state => state.actions.setParkingData
   )
+  const addStar = useStarStore(state => state.actions.addStar)
 
   const getData = async (region: string) => {
     try {
@@ -88,7 +90,7 @@ const Map = () => {
             <div class="top">
               <div class="topleft">
                 <p class="nameText">${elem.PKLT_NM}</p>
-                
+                <button class="starBtn">추가용</button>
               </div>
               <button class="closeBtn">닫기</button>
             </div>
@@ -114,6 +116,12 @@ const Map = () => {
           currentOverlayRef.current = null // 오버레이 제거 시 상태도 초기화
         }
         // const
+        const starBtn = content.querySelector('.starBtn') as HTMLButtonElement
+        if (starBtn) {
+          starBtn.onclick = () => {
+            addStar({ ...elem, id: Date.now() })
+          }
+        }
         const closeOverlayBtn = content.querySelector(
           '.closeBtn'
         ) as HTMLButtonElement

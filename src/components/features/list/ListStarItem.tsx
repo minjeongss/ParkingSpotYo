@@ -1,41 +1,33 @@
+import { useNavigate } from 'react-router-dom'
 import XIcon from '../../../assets/x.svg?react'
-import useStarStore from '../../../stores/starStore'
+import useStarStore, { StarItem } from '../../../stores/starStore'
 import {
   Container,
   NameText,
   DetailText,
   DetailBtn,
 } from '../../../styles/ListItemStyles'
-import { ParkingInfo } from '../../../types/api'
 import Line from './Line'
 
-interface ListItemProps
-  extends Pick<
-    ParkingInfo,
-    'PKLT_NM' | 'ADDR' | 'PRK_TYPE_NM' | 'BSC_PRK_CRG'
-  > {
-  id: number
+interface ListStarItemProps {
+  data: StarItem
 }
-
-const ListStarItem = ({
-  id,
-  PKLT_NM,
-  ADDR,
-  PRK_TYPE_NM,
-  BSC_PRK_CRG,
-}: ListItemProps) => {
+const ListStarItem = ({ data }: ListStarItemProps) => {
   const deletePartStar = useStarStore(state => state.actions.deletePartStar)
+  const navigate = useNavigate()
   return (
     <div>
       <Container>
         <div>
-          <NameText>{PKLT_NM}</NameText>
+          <NameText>{data.PKLT_NM}</NameText>
           <DetailText>
-            {ADDR}/ {PRK_TYPE_NM} / 기본요금 {BSC_PRK_CRG}원
+            {data.ADDR}/ {data.PRK_TYPE_NM} / 기본요금 {data.BSC_PRK_CRG}원
           </DetailText>
-          <DetailBtn>상세보기</DetailBtn>
+          <DetailBtn onClick={() => navigate('/detailMap', { state: data })}>
+            상세보기
+          </DetailBtn>
         </div>
-        <XIcon onClick={() => deletePartStar(id)} />
+        <XIcon onClick={() => deletePartStar(data.id)} />
       </Container>
       <Line />
     </div>
