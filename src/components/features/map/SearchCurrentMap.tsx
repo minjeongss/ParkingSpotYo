@@ -1,30 +1,28 @@
 import { UpdateBtn, UpdateText } from '../../../styles/SearchCurrentMapStyles'
 import ArrowIcon from '../../../assets/arrow.svg?react'
 import { fetchParkingData } from '../../../services/apiService'
-import { ParkingInfo } from '../../../types/api'
+import useMapStore from '../../../stores/mapStore'
+import useParkingInfoStore from '../../../stores/parkingInfoStore'
 
-interface SearchCurrentMapProps {
-  currentRegion: string | null
-  setData: (data: ParkingInfo[] | null) => void
-}
-const SearchCurrentMap = ({
-  currentRegion,
-  setData,
-}: SearchCurrentMapProps) => {
-  const getData = async (region: string | null) => {
-    if (!region) return
+const SearchCurrentMap = () => {
+  const setParkingData = useParkingInfoStore(
+    state => state.actions.setParkingData
+  )
+  const region = useMapStore(state => state.region)
+  const getData = async (regionProp: string | null) => {
+    if (!regionProp) return
     try {
-      const initialData = await fetchParkingData(region)
-      setData(initialData || null) // undefined일 경우 null로 설정
+      const initialData = await fetchParkingData(regionProp)
+      setParkingData(initialData || null)
     } catch (error) {
-      setData(null) // 오류 발생 시 null로 설정
+      setParkingData(null) // 오류 발생 시 null로 설정
       // eslint-disable-next-line no-console
-      console.error('Error fetching parking data:', error) // 에러 로그 추가
+      console.error('Error fetching parking data:', error)
     }
   }
   const handleClick = () => {
     // eslint-disable-next-line no-void
-    void getData(currentRegion)
+    void getData(region)
   }
   return (
     <UpdateBtn onClick={handleClick}>

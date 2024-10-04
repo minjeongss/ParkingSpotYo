@@ -15,15 +15,17 @@ import MoveCurrentPosition from './MoveCurrentPosition'
 import useMap from '../../../hooks/useMap'
 import Toast from '../../common/Toast/Toast'
 import useParkingInfoStore from '../../../stores/parkingInfoStore'
+import useMapStore from '../../../stores/mapStore'
 
 const Map = () => {
   const navigate = useNavigate()
-  const [data, setData] = useState<ParkingInfo[] | null>(null)
   const [map, setMap] = useState<MapInstance | null>(null) // map 상태 추가
   const [isToast, setIsToast] = useState<boolean>(false)
-  const currentOverlayRef = useRef<CustomOverlayInstance | null>(null) // useRef로 오버레이 상태 추가
+  const currentOverlayRef = useRef<CustomOverlayInstance | null>(null)
   const markersRef = useRef<MarkerInstance[]>([])
   const currentRegion = useRef<string | null>(null)
+  const { setRegion } = useMapStore(state => state.actions)
+  const parkingData = useParkingInfoStore(state => state.parkingData)
   const setParkingData = useParkingInfoStore(
     state => state.actions.setParkingData
   )
@@ -31,11 +33,9 @@ const Map = () => {
   const getData = async (region: string) => {
     try {
       const initialData = await fetchParkingData(region)
-      setData(initialData || null) // undefined일 경우 null로 설정
       setParkingData(initialData || null)
     } catch (error) {
       console.error('Fetch Parking Data', error)
-      setData(null) // 오류 발생 시 null로 설정
       setParkingData(null)
     }
   }
@@ -54,6 +54,7 @@ const Map = () => {
       // eslint-disable-next-line no-void
       void getData('중구')
       currentRegion.current = '중구'
+      setRegion('중구')
     }
   }, [])
 
@@ -127,15 +128,15 @@ const Map = () => {
         }
       })
     }
-    if (map && data) {
+    if (map && parkingData) {
       clearMarkers()
-      data.forEach(elem => {
+      parkingData.forEach(elem => {
         const lat = Number(elem.LAT)
         const lot = Number(elem.LOT)
         displayMarker(lat, lot, elem) // 마커 표시
       })
     }
-  }, [navigate, data, map, currentRegion]) // data와 map이 변경될 때마다 실행
+  }, [navigate, parkingData, map, currentRegion]) // data와 map이 변경될 때마다 실행
 
   useEffect(() => {
     const geocoder = new window.kakao.maps.services.Geocoder()
@@ -151,6 +152,7 @@ const Map = () => {
             const newRegion = result[i].address_name.split(' ')[1]
             if (newRegion !== currentRegion.current) {
               currentRegion.current = newRegion
+              setRegion(newRegion)
               clearMarkers()
               // eslint-disable-next-line no-void
               void getData(newRegion)
@@ -174,10 +176,7 @@ const Map = () => {
   }, [map, currentRegion])
   return (
     <MapContainer id="map">
-      <SearchCurrentMap
-        currentRegion={currentRegion.current}
-        setData={setData}
-      />
+      <SearchCurrentMap />
       <MoveCurrentPosition map={map} />
       {isToast && (
         <Toast
