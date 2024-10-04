@@ -1,21 +1,26 @@
 import { IconContainer, H1 } from '../../../styles/DetailMapStyles'
-import StarIcon from '../../../assets/star.svg?react'
+import YellowStar from '../../../assets/yellowStar.svg?react'
+import GrayStar from '../../../assets/grayStar.svg?react'
 import useStarStore from '../../../stores/starStore'
 import { ParkingInfo } from '../../../types/api'
 
 interface AlignIconProps {
   info: ParkingInfo
 }
+
 const AlignIcon = ({ info }: AlignIconProps) => {
   const star = useStarStore(state => state.star)
   const deletePartStar = useStarStore(state => state.actions.deletePartStar)
   const addStar = useStarStore(state => state.actions.addStar)
+  const isStar = star?.some(
+    item => item.LAT === info.LAT && item.LOT === info.LOT
+  )
+
   const handleClick = () => {
-    let isStar = false
-    star?.forEach(item => {
-      if (item.LAT === info.LAT && item.LOT === info.LOT) isStar = true
-    })
-    if (isStar) {
+    const isStarNow = useStarStore
+      .getState()
+      .star?.some(item => item.LAT === info.LAT && item.LOT === info.LOT)
+    if (isStarNow) {
       deletePartStar(info.LAT, info.LOT)
     } else {
       addStar(info)
@@ -24,7 +29,11 @@ const AlignIcon = ({ info }: AlignIconProps) => {
   return (
     <IconContainer>
       <H1>{info.PKLT_NM}</H1>
-      <StarIcon onClick={handleClick} />
+      {isStar ? (
+        <YellowStar onClick={handleClick} />
+      ) : (
+        <GrayStar onClick={handleClick} />
+      )}
     </IconContainer>
   )
 }

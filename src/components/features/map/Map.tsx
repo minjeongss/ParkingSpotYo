@@ -91,7 +91,9 @@ const Map = () => {
             <div class="top">
               <div class="topleft">
                 <p class="nameText">${elem.PKLT_NM}</p>
-                <button class="starBtn">추가용</button>
+                <button class="starBtn">
+                  <img src="/src/assets/grayStar.svg"/>
+                </button>
               </div>
               <button class="closeBtn">닫기</button>
             </div>
@@ -125,11 +127,11 @@ const Map = () => {
                 item => item.LAT === elem.LAT && item.LOT === elem.LOT
               )
             if (isStar) {
-              console.log('delete')
               deletePartStar(elem.LAT, elem.LOT)
+              starBtn.innerHTML = '<img src="/src/assets/grayStar.svg"/>'
             } else {
-              console.log('add')
               addStar(elem)
+              starBtn.innerHTML = '<img src="/src/assets/yellowStar.svg"/>'
             }
           }
         }
