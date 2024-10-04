@@ -1,11 +1,15 @@
 import styled from '@emotion/styled'
 
+export const ItemContainer = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.5rem',
+})
 export const Container = styled.div({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  gap: '1rem',
   margin: 0,
 })
 export const NameText = styled.p({

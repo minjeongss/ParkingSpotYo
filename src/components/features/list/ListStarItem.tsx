@@ -6,6 +6,7 @@ import {
   NameText,
   DetailText,
   DetailBtn,
+  ItemContainer,
 } from '../../../styles/ListItemStyles'
 import Line from './Line'
 import { ParkingInfo } from '../../../types/api'
@@ -19,7 +20,7 @@ const ListStarItem = ({ data }: ListStarItemProps) => {
   return (
     <div>
       <Container>
-        <div>
+        <ItemContainer>
           <NameText>{data.PKLT_NM}</NameText>
           <DetailText>
             {data.ADDR}/ {data.PRK_TYPE_NM} / 기본요금 {data.BSC_PRK_CRG}원
@@ -27,7 +28,7 @@ const ListStarItem = ({ data }: ListStarItemProps) => {
           <DetailBtn onClick={() => navigate('/detailMap', { state: data })}>
             상세보기
           </DetailBtn>
-        </div>
+        </ItemContainer>
         <XIcon onClick={() => deletePartStar(data.LAT, data.LOT)} />
       </Container>
       <Line />

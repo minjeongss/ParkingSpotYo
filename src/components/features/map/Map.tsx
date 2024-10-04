@@ -32,7 +32,6 @@ const Map = () => {
   )
   const addStar = useStarStore(state => state.actions.addStar)
   const deletePartStar = useStarStore(state => state.actions.deletePartStar)
-  const star = useStarStore(state => state.star)
 
   const getData = async (region: string) => {
     try {
