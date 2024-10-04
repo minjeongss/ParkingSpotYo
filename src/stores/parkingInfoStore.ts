@@ -3,6 +3,7 @@ import { ParkingInfo } from '../types/api'
 
 interface State {
   parkingData: ParkingInfo[] | null
+  filteredPargkinData: ParkingInfo[] | null
 }
 interface Actions {
   actions: {
@@ -11,6 +12,7 @@ interface Actions {
 }
 const useParkingInfoStore = create<State & Actions>(set => ({
   parkingData: null,
+  filteredPargkinData: null,
   actions: {
     setParkingData: newData => set({ parkingData: newData }),
   },
