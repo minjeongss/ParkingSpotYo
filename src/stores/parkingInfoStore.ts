@@ -1,10 +1,10 @@
 import { create } from 'zustand'
 import { ParkingInfo } from '../types/api'
 
-type State = {
+interface State {
   parkingData: ParkingInfo[] | null
 }
-type Actions = {
+interface Actions {
   actions: {
     setParkingData: (newData: ParkingInfo[] | null) => void
   }

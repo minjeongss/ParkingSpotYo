@@ -12,9 +12,12 @@ interface ListItemProps
   extends Pick<
     ParkingInfo,
     'PKLT_NM' | 'ADDR' | 'PRK_TYPE_NM' | 'BSC_PRK_CRG'
-  > {}
+  > {
+  isStar: boolean
+}
 
 const ListItem = ({
+  isStar,
   PKLT_NM,
   ADDR,
   PRK_TYPE_NM,
@@ -30,7 +33,7 @@ const ListItem = ({
           </DetailText>
           <DetailBtn>상세보기</DetailBtn>
         </div>
-        <XIcon />
+        {isStar && <XIcon />}
       </Container>
       <Line />
     </div>
