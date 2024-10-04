@@ -7,10 +7,15 @@ interface AlignIconProps {
   info: ParkingInfo
 }
 const AlignIcon = ({ info }: AlignIconProps) => {
+  const star = useStarStore(state => state.star)
   const deletePartStar = useStarStore(state => state.actions.deletePartStar)
   const addStar = useStarStore(state => state.actions.addStar)
   const handleClick = () => {
-    if (true) {
+    let isStar = false
+    star?.forEach(item => {
+      if (item.LAT === info.LAT && item.LOT === info.LOT) isStar = true
+    })
+    if (isStar) {
       deletePartStar(info.LAT, info.LOT)
     } else {
       addStar(info)

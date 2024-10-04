@@ -31,6 +31,7 @@ const Map = () => {
     state => state.actions.setParkingData
   )
   const addStar = useStarStore(state => state.actions.addStar)
+  const deletePartStar = useStarStore(state => state.actions.deletePartStar)
 
   const getData = async (region: string) => {
     try {
@@ -115,11 +116,21 @@ const Map = () => {
           customOverlay.setMap(null)
           currentOverlayRef.current = null // 오버레이 제거 시 상태도 초기화
         }
-        // const
         const starBtn = content.querySelector('.starBtn') as HTMLButtonElement
         if (starBtn) {
           starBtn.onclick = () => {
-            addStar(elem)
+            const isStar = useStarStore
+              .getState()
+              .star?.some(
+                item => item.LAT === elem.LAT && item.LOT === elem.LOT
+              )
+            if (isStar) {
+              console.log('delete')
+              deletePartStar(elem.LAT, elem.LOT)
+            } else {
+              console.log('add')
+              addStar(elem)
+            }
           }
         }
         const closeOverlayBtn = content.querySelector(
