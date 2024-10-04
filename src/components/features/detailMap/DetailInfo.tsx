@@ -12,7 +12,7 @@ import { ParkingInfo } from '../../../types/api'
 const DetailInfo = ({ info }: { info: ParkingInfo }) => {
   return (
     <InfoContainer>
-      <AlignIcon name={info.PKLT_NM} />
+      <AlignIcon info={info} />
       <AlignExtraLightText
         type="정보 업데이트"
         data={
