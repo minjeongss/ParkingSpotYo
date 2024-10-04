@@ -119,7 +119,7 @@ const Map = () => {
         const starBtn = content.querySelector('.starBtn') as HTMLButtonElement
         if (starBtn) {
           starBtn.onclick = () => {
-            addStar({ ...elem, id: Date.now() })
+            addStar(elem)
           }
         }
         const closeOverlayBtn = content.querySelector(

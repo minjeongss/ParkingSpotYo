@@ -21,8 +21,12 @@ const List = () => {
       <Line />
       <ListItemContainer>
         {isStar
-          ? star?.map(data => <ListStarItem key={data.id} data={data} />)
-          : parkingData?.map(data => <ListEntireItem data={data} />)}
+          ? star?.map(data => (
+              <ListStarItem key={`${data.LAT}-${data.LOT}`} data={data} />
+            ))
+          : parkingData?.map(data => (
+              <ListEntireItem key={`${data.LAT}-${data.LOT}`} data={data} />
+            ))}
       </ListItemContainer>
     </Container>
   )

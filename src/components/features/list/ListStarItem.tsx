@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import XIcon from '../../../assets/x.svg?react'
-import useStarStore, { StarItem } from '../../../stores/starStore'
+import useStarStore from '../../../stores/starStore'
 import {
   Container,
   NameText,
@@ -8,9 +8,10 @@ import {
   DetailBtn,
 } from '../../../styles/ListItemStyles'
 import Line from './Line'
+import { ParkingInfo } from '../../../types/api'
 
 interface ListStarItemProps {
-  data: StarItem
+  data: ParkingInfo
 }
 const ListStarItem = ({ data }: ListStarItemProps) => {
   const deletePartStar = useStarStore(state => state.actions.deletePartStar)
@@ -27,7 +28,7 @@ const ListStarItem = ({ data }: ListStarItemProps) => {
             상세보기
           </DetailBtn>
         </div>
-        <XIcon onClick={() => deletePartStar(data.id)} />
+        <XIcon onClick={() => deletePartStar(data.LAT, data.LOT)} />
       </Container>
       <Line />
     </div>

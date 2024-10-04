@@ -1,5 +1,5 @@
 export interface ParkingInfo {
-  PKLT_CD: string
+  PKLT_CD: number
   PKLT_NM: string
   ADDR: string
   PKLT_TYPE: string
