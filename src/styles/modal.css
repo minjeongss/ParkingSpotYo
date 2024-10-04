@@ -30,6 +30,15 @@
   align-items: center;
   gap: 6rem;
 }
+.topleft {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.top .starImg {
+  cursor: pointer;
+}
+
 .top .nameText {
   color: #0875f5;
   font-weight: bold;

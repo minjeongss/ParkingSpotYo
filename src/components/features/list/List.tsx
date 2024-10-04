@@ -40,14 +40,7 @@ const List = () => {
                 BSC_PRK_CRG={data.BSC_PRK_CRG}
               />
             ))
-          : parkingData?.map(data => (
-              <ListEntireItem
-                PKLT_NM={data.PKLT_NM}
-                ADDR={data.ADDR}
-                PRK_TYPE_NM={data.PRK_TYPE_NM}
-                BSC_PRK_CRG={data.BSC_PRK_CRG}
-              />
-            ))}
+          : parkingData?.map(data => <ListEntireItem data={data} />)}
       </ListItemContainer>
     </Container>
   )

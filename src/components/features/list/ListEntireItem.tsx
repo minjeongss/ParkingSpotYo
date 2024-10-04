@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import {
   Container,
   NameText,
@@ -7,27 +8,23 @@ import {
 import { ParkingInfo } from '../../../types/api'
 import Line from './Line'
 
-interface ListItemProps
-  extends Pick<
-    ParkingInfo,
-    'PKLT_NM' | 'ADDR' | 'PRK_TYPE_NM' | 'BSC_PRK_CRG'
-  > {}
+interface ListEntireItemProps {
+  data: ParkingInfo // data prop의 타입 정의
+}
 
-const ListEntireItem = ({
-  PKLT_NM,
-  ADDR,
-  PRK_TYPE_NM,
-  BSC_PRK_CRG,
-}: ListItemProps) => {
+const ListEntireItem = ({ data }: ListEntireItemProps) => {
+  const navigate = useNavigate()
   return (
     <div>
       <Container>
         <div>
-          <NameText>{PKLT_NM}</NameText>
+          <NameText>{data.PKLT_NM}</NameText>
           <DetailText>
-            {ADDR}/ {PRK_TYPE_NM} / 기본요금 {BSC_PRK_CRG}원
+            {data.ADDR}/ {data.PRK_TYPE_NM} / 기본요금 {data.BSC_PRK_CRG}원
           </DetailText>
-          <DetailBtn>상세보기</DetailBtn>
+          <DetailBtn onClick={() => navigate('/detailMap', { state: data })}>
+            상세보기
+          </DetailBtn>
         </div>
       </Container>
       <Line />

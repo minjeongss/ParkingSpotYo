@@ -86,7 +86,10 @@ const Map = () => {
         content.innerHTML = `
           <div class="overlayConainer">
             <div class="top">
-              <p class="nameText">${elem.PKLT_NM}</p>
+              <div class="topleft">
+                <p class="nameText">${elem.PKLT_NM}</p>
+                
+              </div>
               <button class="closeBtn">닫기</button>
             </div>
             <p class="addressText">${elem.ADDR}</p>
@@ -110,6 +113,7 @@ const Map = () => {
           customOverlay.setMap(null)
           currentOverlayRef.current = null // 오버레이 제거 시 상태도 초기화
         }
+        // const
         const closeOverlayBtn = content.querySelector(
           '.closeBtn'
         ) as HTMLButtonElement
