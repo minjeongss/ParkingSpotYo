@@ -32,6 +32,7 @@ const Map = () => {
   )
   const addStar = useStarStore(state => state.actions.addStar)
   const deletePartStar = useStarStore(state => state.actions.deletePartStar)
+  const star = useStarStore(state => state.star)
 
   const getData = async (region: string) => {
     try {
@@ -85,6 +86,12 @@ const Map = () => {
           currentOverlayRef.current.setMap(null)
         }
         // custom overlay
+        const isStarInit = useStarStore
+          .getState()
+          .star?.some(item => item.LAT === elem.LAT && item.LOT === elem.LOT)
+        const starImageSrc = isStarInit
+          ? '/src/assets/yellowStar.svg'
+          : '/src/assets/grayStar.svg'
         const content = document.createElement('div')
         content.innerHTML = `
           <div class="overlayConainer">
@@ -92,7 +99,7 @@ const Map = () => {
               <div class="topleft">
                 <p class="nameText">${elem.PKLT_NM}</p>
                 <button class="starBtn">
-                  <img src="/src/assets/grayStar.svg"/>
+                  <img src="${starImageSrc}"/>
                 </button>
               </div>
               <button class="closeBtn">닫기</button>
