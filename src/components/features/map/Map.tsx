@@ -14,6 +14,7 @@ import SearchCurrentMap from './SearchCurrentMap'
 import MoveCurrentPosition from './MoveCurrentPosition'
 import useMap from '../../../hooks/useMap'
 import Toast from '../../common/Toast/Toast'
+import useParkingInfoStore from '../../../stores/parkingInfoStore'
 
 const Map = () => {
   const navigate = useNavigate()
@@ -23,13 +24,19 @@ const Map = () => {
   const currentOverlayRef = useRef<CustomOverlayInstance | null>(null) // useRef로 오버레이 상태 추가
   const markersRef = useRef<MarkerInstance[]>([])
   const currentRegion = useRef<string | null>(null)
+  const setParkingData = useParkingInfoStore(
+    state => state.actions.setParkingData
+  )
 
   const getData = async (region: string) => {
     try {
       const initialData = await fetchParkingData(region)
       setData(initialData || null) // undefined일 경우 null로 설정
+      setParkingData(initialData || null)
     } catch (error) {
+      console.error('Fetch Parking Data', error)
       setData(null) // 오류 발생 시 null로 설정
+      setParkingData(null)
     }
   }
   const clearMarkers = () => {

@@ -5,7 +5,7 @@ export const Container = styled.div({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  gap: '0.5rem',
+  gap: '1rem',
   margin: 0,
 })
 export const NameText = styled.p({
