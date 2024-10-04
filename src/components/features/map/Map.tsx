@@ -17,6 +17,8 @@ import Toast from '../../common/Toast/Toast'
 import useParkingInfoStore from '../../../stores/parkingInfoStore'
 import useMapStore from '../../../stores/mapStore'
 import useStarStore from '../../../stores/starStore'
+import Filter from '../filter/Filter'
+import { FILTER_GAP, FILTER_TYPE } from '../../../constants/filterConstants'
 
 const Map = () => {
   const navigate = useNavigate()
@@ -207,6 +209,7 @@ const Map = () => {
   }, [map, currentRegion])
   return (
     <MapContainer id="map">
+      <Filter />
       <SearchCurrentMap />
       <MoveCurrentPosition map={map} />
       {isToast && (
