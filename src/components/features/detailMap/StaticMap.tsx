@@ -23,11 +23,8 @@ const StaticMap = ({ info }: { info: ParkingInfo }) => {
       marker,
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const staticMap = new window.kakao.maps.StaticMap(
-      staticMapContainer,
-      staticMapOption
-    )
+    // eslint-disable-next-line no-new
+    new window.kakao.maps.StaticMap(staticMapContainer, staticMapOption)
   }, [info.LAT, info.LOT])
   return <MapContainer id="staticMap" />
 }

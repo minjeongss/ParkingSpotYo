@@ -26,7 +26,6 @@ const HomeHeader = () => {
             <HamIcon />
             <TypeText>리스트</TypeText>
           </NonMobileContainer>
-
           <StyledMapIcon />
         </TypeContainer>
       ) : (
