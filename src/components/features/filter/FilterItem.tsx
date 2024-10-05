@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   Container,
   ContentContainer,
@@ -24,19 +23,36 @@ const FilterItem = ({ index, type }: { index: number; type: string }) => {
   const handleClick = () => {
     const newIsFilter = [...useParkingInfoStore.getState().isFilter]
 
-    // 유료-무료, 노상-노외 성립하지 않도록 설정
-    console.log(type)
+    // 중복 허락하지 않도록 설정
     if (type === '유료') {
       newIsFilter[1] = false
+      newIsFilter[2] = false
+      newIsFilter[3] = false
+      newIsFilter[4] = false
     }
     if (type === '무료') {
       newIsFilter[0] = false
+      newIsFilter[2] = false
+      newIsFilter[3] = false
+      newIsFilter[4] = false
     }
     if (type === '노상') {
       newIsFilter[3] = false
+      newIsFilter[0] = false
+      newIsFilter[1] = false
+      newIsFilter[4] = false
     }
     if (type === '노외') {
       newIsFilter[2] = false
+      newIsFilter[0] = false
+      newIsFilter[1] = false
+      newIsFilter[4] = false
+    }
+    if (type === '현재 주차 가능') {
+      newIsFilter[0] = false
+      newIsFilter[1] = false
+      newIsFilter[2] = false
+      newIsFilter[3] = false
     }
 
     newIsFilter[index] = !isClicked // 현재 클릭 상태 토글
