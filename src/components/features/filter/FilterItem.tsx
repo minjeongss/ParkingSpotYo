@@ -31,9 +31,7 @@ const FilterItem = ({ type }: { type: string }) => {
     if (type === '노외') {
       return <ParkingBuildingIcon color={isClicked ? '#FFFFFF' : color} />
     }
-    if (type === '현재 주차 가능') {
-      return <CarIcon color={isClicked ? '#FFFFFF' : color} />
-    }
+    return <CarIcon color={isClicked ? '#FFFFFF' : color} />
   }
   const setContainer = (color: string) => {
     return (

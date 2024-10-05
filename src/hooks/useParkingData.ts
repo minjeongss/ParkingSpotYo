@@ -1,13 +1,15 @@
 import { fetchParkingData } from '../services/apiService'
+import useParkingInfoStore from '../stores/parkingInfoStore'
 
 const useParkingData = async (region: string) => {
-  let data = null
+  const setParkingData = useParkingInfoStore(
+    state => state.actions.setParkingData
+  )
   try {
     const initialData = await fetchParkingData(region)
-    data = initialData
+    setParkingData(initialData || null)
   } catch (error) {
-    data = null
+    setParkingData(null)
   }
-  return data
 }
 export default useParkingData

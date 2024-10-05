@@ -18,7 +18,7 @@ import useParkingInfoStore from '../../../stores/parkingInfoStore'
 import useMapStore from '../../../stores/mapStore'
 import useStarStore from '../../../stores/starStore'
 import Filter from '../filter/Filter'
-import { FILTER_GAP, FILTER_TYPE } from '../../../constants/filterConstants'
+import { INITIAL_CENTER_REGION } from '../../../constants/mapConstants'
 
 const Map = () => {
   const navigate = useNavigate()
@@ -27,7 +27,7 @@ const Map = () => {
   const currentOverlayRef = useRef<CustomOverlayInstance | null>(null)
   const markersRef = useRef<MarkerInstance[]>([])
   const currentRegion = useRef<string | null>(null)
-  const { setRegion } = useMapStore(state => state.actions)
+  const { setRegion, setMapZustand } = useMapStore(state => state.actions)
   const parkingData = useParkingInfoStore(state => state.parkingData)
   const setParkingData = useParkingInfoStore(
     state => state.actions.setParkingData
@@ -55,11 +55,12 @@ const Map = () => {
     const initializedMap = useMap()
     if (initializedMap) {
       setMap(initializedMap) // map 상태 업데이트
+      setMapZustand(initializedMap)
 
       // eslint-disable-next-line no-void
-      void getData('중구')
-      currentRegion.current = '중구'
-      setRegion('중구')
+      void getData(INITIAL_CENTER_REGION)
+      currentRegion.current = INITIAL_CENTER_REGION
+      setRegion(INITIAL_CENTER_REGION)
     }
   }, [])
 

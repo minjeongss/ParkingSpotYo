@@ -1,5 +1,5 @@
 import HomeHeader from '../../layout/HomeHeader'
-import SearchRegion from './SearchRegion'
+import SearchRegion from '../search/SearchRegion'
 import ListRegion from './ListRegion'
 import Line from './Line'
 import ListEntireItem from './ListEntireItem'
