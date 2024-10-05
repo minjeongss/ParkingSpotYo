@@ -12,7 +12,7 @@ import {
 import MapContainer from '../../../styles/MapStyles'
 import SearchCurrentMap from './SearchCurrentMap'
 import MoveCurrentPosition from './MoveCurrentPosition'
-import useMap from '../../../hooks/useMap'
+import getMap from '../../../hooks/getMap'
 import Toast from '../../common/Toast/Toast'
 import useParkingInfoStore from '../../../stores/parkingInfoStore'
 import useMapStore from '../../../stores/mapStore'
@@ -34,13 +34,16 @@ const Map = () => {
   )
   const addStar = useStarStore(state => state.actions.addStar)
   const deletePartStar = useStarStore(state => state.actions.deletePartStar)
+  const isFilter = useParkingInfoStore(state => state.isFilter)
+  const filterParkingData = useParkingInfoStore(
+    state => state.filterPargkigData
+  )
 
   const getData = async (region: string) => {
     try {
       const initialData = await fetchParkingData(region)
       setParkingData(initialData || null)
     } catch (error) {
-      console.error('Fetch Parking Data', error)
       setParkingData(null)
     }
   }
@@ -52,7 +55,7 @@ const Map = () => {
   }
 
   useEffect(() => {
-    const initializedMap = useMap()
+    const initializedMap = getMap()
     if (initializedMap) {
       setMap(initializedMap) // map 상태 업데이트
       setMapZustand(initializedMap)
@@ -164,13 +167,22 @@ const Map = () => {
     }
     if (map && parkingData) {
       clearMarkers()
-      parkingData.forEach(elem => {
-        const lat = Number(elem.LAT)
-        const lot = Number(elem.LOT)
-        displayMarker(lat, lot, elem) // 마커 표시
-      })
+      if (useParkingInfoStore.getState().isFilter.some(item => item === true)) {
+        filterParkingData?.forEach(elem => {
+          const lat = Number(elem.LAT)
+          const lot = Number(elem.LOT)
+          displayMarker(lat, lot, elem) // 마커 표시
+        })
+      } else {
+        console.log('parking')
+        parkingData.forEach(elem => {
+          const lat = Number(elem.LAT)
+          const lot = Number(elem.LOT)
+          displayMarker(lat, lot, elem) // 마커 표시
+        })
+      }
     }
-  }, [navigate, parkingData, map, currentRegion]) // data와 map이 변경될 때마다 실행
+  }, [navigate, parkingData, map, currentRegion, filterParkingData]) // data와 map이 변경될 때마다 실행
 
   useEffect(() => {
     const geocoder = new window.kakao.maps.services.Geocoder()

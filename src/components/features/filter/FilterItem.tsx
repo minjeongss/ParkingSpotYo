@@ -6,14 +6,31 @@ import {
 } from '../../../styles/FilterItemStyles'
 import CarIcon from './CarIcon'
 import MoneyIcon from './MoneyIcon'
-import MoonIcon from './MoonIcon'
 import ParkingBuildingIcon from './ParkingBuildingIcon'
 import ParkingRoadIcon from './ParkingRoadIcon'
+import useParkingInfoStore from '../../../stores/parkingInfoStore'
 
-const FilterItem = ({ type }: { type: string }) => {
-  const [isClicked, setIsClicked] = useState(false)
+const FilterItem = ({ index, type }: { index: number; type: string }) => {
+  const isClicked = useParkingInfoStore(state => state.isFilter[index])
+  const setIsFilter = useParkingInfoStore(state => state.actions.setIsFilter)
+  // const [isClicked, setIsClicked] = useState(false)
+  // const parkingData = useParkingInfoStore(state => state.parkingData)
+  const filterNotFree = useParkingInfoStore(
+    state => state.actions.filterNotFree
+  )
+  const resetNotFree = useParkingInfoStore(state => state.actions.filterNotFree)
   const handleClick = () => {
-    setIsClicked(!isClicked)
+    const newIsFilter = [...useParkingInfoStore.getState().isFilter]
+    newIsFilter[index] = !isClicked // 현재 클릭 상태 토글
+    setIsFilter(newIsFilter) // 업데이트된 필터 상태 저장
+
+    if (newIsFilter[index]) {
+      if (type === '유료') {
+        filterNotFree()
+      }
+    } else {
+      resetNotFree()
+    }
   }
   const setIcon = (color: string) => {
     if (type === '유료') {
@@ -21,9 +38,6 @@ const FilterItem = ({ type }: { type: string }) => {
     }
     if (type === '무료') {
       return <MoneyIcon color={isClicked ? '#FFFFFF' : color} />
-    }
-    if (type === '야간') {
-      return <MoonIcon color={isClicked ? '#FFFFFF' : color} />
     }
     if (type === '노상') {
       return <ParkingRoadIcon color={isClicked ? '#FFFFFF' : color} />

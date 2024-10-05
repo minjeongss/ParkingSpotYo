@@ -1,6 +1,6 @@
 import { INITIAL_CENTER, INITIAL_ZOOM_LEVEL } from '../constants/mapConstants'
 
-const useMap = () => {
+const getMap = () => {
   const container = document.getElementById('map')
   if (!container) {
     return
@@ -19,4 +19,4 @@ const useMap = () => {
   return initializedMap
 }
 
-export default useMap
+export default getMap

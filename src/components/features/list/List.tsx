@@ -15,8 +15,10 @@ const List = () => {
   const star = useStarStore(state => state.star)
   return (
     <Container>
-      <HomeHeader />
-      <SearchRegion />
+      <div>
+        <HomeHeader />
+        <SearchRegion />
+      </div>
       {isStar ? <ListStar /> : <ListRegion />}
       <Line />
       <ListItemContainer>
