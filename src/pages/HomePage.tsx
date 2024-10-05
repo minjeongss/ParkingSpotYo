@@ -5,12 +5,16 @@ import Map from '../components/features/map/Map'
 import { getFromLocal } from '../services/localStorageService'
 import useStarStore from '../stores/starStore'
 
-const HomeContainer = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  width: '100%',
-  height: '100vh',
-})
+const HomeContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
+`
 const HomePage = () => {
   const setStar = useStarStore(state => state.actions.setStar)
   useEffect(() => {

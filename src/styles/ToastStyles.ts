@@ -10,5 +10,10 @@ const ToastContainer = styled.div<{ background: string }>(({ background }) => ({
   background,
   color: '#FFFFFF',
   transition: '0.2s all ease-out',
+  '@media(max-width:7800px)': {
+    right: '50%',
+    transform: 'translateX(50%)',
+    whiteSpace: 'nowrap',
+  },
 }))
 export default ToastContainer

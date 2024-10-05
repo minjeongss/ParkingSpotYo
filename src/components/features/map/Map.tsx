@@ -22,6 +22,7 @@ import { INITIAL_CENTER_REGION } from '../../../constants/mapConstants'
 import getStarLength from '../../../hooks/getStarLength'
 import useToastStore from '../../../stores/toastStore'
 import { saveToLocal } from '../../../services/localStorageService'
+import OpenStarList from './OpenStarList'
 
 const Map = () => {
   const navigate = useNavigate()
@@ -33,6 +34,7 @@ const Map = () => {
   const { setRegion, setMapZustand } = useMapStore(state => state.actions)
   const parkingData = useParkingInfoStore(state => state.parkingData)
   const { setParkingData } = useParkingInfoStore(state => state.actions)
+  const isStar = useStarStore(state => state.isStar)
   const { addStar, deletePartStar } = useStarStore(state => state.actions)
   const filterParkingData = useParkingInfoStore(
     state => state.filterPargkigData
@@ -237,8 +239,9 @@ const Map = () => {
     }
   }, [map, currentRegion])
   return (
-    <MapContainer id="map">
+    <MapContainer id="map" isStar={isStar}>
       <Filter />
+      <OpenStarList />
       <SearchCurrentMap />
       <MoveCurrentPosition map={map} />
       {isToast && <Toast map={map} />}

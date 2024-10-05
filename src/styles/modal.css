@@ -10,7 +10,7 @@
   border-radius: 15px;
   padding: 1.5rem;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  z-index: 999;
+  z-index: 1000;
   min-width: 250px;
 }
 .overlayConainer::after {
@@ -75,4 +75,23 @@
   background: none;
   border: none;
   cursor: pointer;
+}
+@media (max-width: 800px) {
+  .overlayConainer {
+    max-width: 500px;
+  }
+  .top {
+    gap: 1rem;
+  }
+  .top .nameText {
+    font-size: 20px;
+    max-width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+  .numberText {
+    font-size: 18px;
+  }
 }

@@ -4,6 +4,8 @@ import HamIcon from '../../assets/hamburger.svg?react'
 import {
   Container,
   LogoContainer,
+  NonMobileContainer,
+  StyledMapIcon,
   TypeContainer,
   TypeText,
 } from '../../styles/HomeHeaderStyles'
@@ -20,13 +22,19 @@ const HomeHeader = () => {
       </LogoContainer>
       {isStar ? (
         <TypeContainer onClick={() => toggleStar(false)}>
-          <HamIcon />
-          <TypeText>리스트</TypeText>
+          <NonMobileContainer>
+            <HamIcon />
+            <TypeText>리스트</TypeText>
+          </NonMobileContainer>
+
+          <StyledMapIcon />
         </TypeContainer>
       ) : (
         <TypeContainer onClick={() => toggleStar(true)}>
-          <PinIcon />
-          <TypeText>즐겨찾기</TypeText>
+          <NonMobileContainer>
+            <PinIcon />
+            <TypeText>즐겨찾기</TypeText>
+          </NonMobileContainer>
         </TypeContainer>
       )}
     </Container>

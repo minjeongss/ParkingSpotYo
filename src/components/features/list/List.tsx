@@ -8,6 +8,7 @@ import {
   Container,
   InnerContainer,
   ListItemContainer,
+  MobileContainer,
 } from '../../../styles/ListStyles'
 import useParkingInfoStore from '../../../stores/parkingInfoStore'
 import useStarStore from '../../../stores/starStore'
@@ -18,23 +19,25 @@ const List = () => {
   const isStar = useStarStore(state => state.isStar)
   const star = useStarStore(state => state.star)
   return (
-    <Container>
+    <Container isStar={isStar}>
       <InnerContainer>
         <div>
           <HomeHeader />
           <SearchRegion />
         </div>
-        {isStar ? <ListStar /> : <ListRegion />}
-        <Line />
-        <ListItemContainer>
-          {isStar
-            ? star?.map(data => (
-                <ListStarItem key={`${data.LAT}-${data.LOT}`} data={data} />
-              ))
-            : parkingData?.map(data => (
-                <ListEntireItem key={`${data.LAT}-${data.LOT}`} data={data} />
-              ))}
-        </ListItemContainer>
+        <MobileContainer isStar={isStar}>
+          {isStar ? <ListStar /> : <ListRegion />}
+          <Line />
+          <ListItemContainer>
+            {isStar
+              ? star?.map(data => (
+                  <ListStarItem key={`${data.LAT}-${data.LOT}`} data={data} />
+                ))
+              : parkingData?.map(data => (
+                  <ListEntireItem key={`${data.LAT}-${data.LOT}`} data={data} />
+                ))}
+          </ListItemContainer>
+        </MobileContainer>
       </InnerContainer>
     </Container>
   )

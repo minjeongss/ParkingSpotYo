@@ -4,6 +4,7 @@ import useParkingInfoStore from '../../../stores/parkingInfoStore'
 import { fetchParkingData } from '../../../services/apiService'
 import useMapStore from '../../../stores/mapStore'
 import getCenterData from '../../../hooks/getCenterData'
+import useStarStore from '../../../stores/starStore'
 
 const SearchRegion = () => {
   const [inputText, setInputText] = useState('')
@@ -11,6 +12,8 @@ const SearchRegion = () => {
   const setParkingData = useParkingInfoStore(
     state => state.actions.setParkingData
   )
+  const toggleStar = useStarStore(state => state.actions.toggleStar)
+
   const getData = async (region: string) => {
     try {
       const initialData = await fetchParkingData(region)
@@ -27,6 +30,7 @@ const SearchRegion = () => {
       const locPosition = getCenterData(inputText)
       map?.setCenter(locPosition)
       setInputText('')
+      toggleStar(false)
     }
   }
   return (

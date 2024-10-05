@@ -1,16 +1,32 @@
 import styled from '@emotion/styled'
 
-export const Container = styled.div({
+export const Container = styled.div<{ isStar: boolean }>(({ isStar }) => ({
   display: 'flex',
   flexDirection: 'column',
   width: '30%',
   height: '100vh',
   margin: 'auto',
-})
-export const InnerContainer = styled.div({
-  width: '85%',
-  margin: 'auto',
-})
+
+  '@media (max-width: 800px)': {
+    width: '100%',
+    height: isStar ? '100vh' : '20vh',
+  },
+}))
+export const InnerContainer = styled.div`
+  width: 85%;
+  margin: auto;
+  @media (max-width: 800px) {
+    width: calc(100% - 2rem);
+  }
+`
+
+export const MobileContainer = styled.div<{ isStar: boolean }>(
+  ({ isStar }) => ({
+    '@media (max-width: 800px)': {
+      display: isStar ? 'block' : 'none',
+    },
+  })
+)
 export const ListItemContainer = styled.div({
   height: '70vh',
   overflowY: 'scroll',
