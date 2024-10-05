@@ -8,6 +8,7 @@ interface State {
 
 interface Actions {
   actions: {
+    setStar: (newStar: ParkingInfo[]) => void
     toggleStar: (newIsStar: boolean) => void
     addStar: (newStar: ParkingInfo) => void
     deletePartStar: (lat: number, lot: number) => void
@@ -20,6 +21,7 @@ const useStarStore = create<State & Actions>(set => ({
   star: null,
   actions: {
     toggleStar: newIsStar => set({ isStar: newIsStar }),
+    setStar: newStar => set(() => ({ star: newStar })),
     addStar: newStar =>
       set(state => ({
         star: state.star ? [...state.star, newStar] : [newStar],

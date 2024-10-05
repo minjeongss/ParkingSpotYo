@@ -10,6 +10,7 @@ import {
 } from '../../../styles/ListItemStyles'
 import Line from './Line'
 import { ParkingInfo } from '../../../types/api'
+import { saveToLocal } from '../../../services/localStorageService'
 
 interface ListStarItemProps {
   data: ParkingInfo
@@ -17,6 +18,10 @@ interface ListStarItemProps {
 const ListStarItem = ({ data }: ListStarItemProps) => {
   const deletePartStar = useStarStore(state => state.actions.deletePartStar)
   const navigate = useNavigate()
+  const handleClick = () => {
+    deletePartStar(data.LAT, data.LOT)
+    saveToLocal()
+  }
   return (
     <div>
       <Container>
@@ -29,7 +34,7 @@ const ListStarItem = ({ data }: ListStarItemProps) => {
             상세보기
           </DetailBtn>
         </ItemContainer>
-        <XIcon onClick={() => deletePartStar(data.LAT, data.LOT)} />
+        <XIcon onClick={handleClick} />
       </Container>
       <Line />
     </div>

@@ -3,6 +3,7 @@ import YellowStar from '../../../assets/yellowStar.svg?react'
 import GrayStar from '../../../assets/grayStar.svg?react'
 import useStarStore from '../../../stores/starStore'
 import { ParkingInfo } from '../../../types/api'
+import { saveToLocal } from '../../../services/localStorageService'
 
 interface AlignIconProps {
   info: ParkingInfo
@@ -25,6 +26,7 @@ const AlignIcon = ({ info }: AlignIconProps) => {
     } else {
       addStar(info)
     }
+    saveToLocal()
   }
   return (
     <IconContainer>

@@ -4,13 +4,14 @@ export const ItemContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   gap: '0.5rem',
+  width: '90%',
 })
 export const Container = styled.div({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  margin: 0,
+  marginRight: '1rem',
 })
 export const NameText = styled.p({
   color: '#4395F6',

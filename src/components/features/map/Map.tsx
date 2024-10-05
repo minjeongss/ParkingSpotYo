@@ -19,24 +19,27 @@ import useMapStore from '../../../stores/mapStore'
 import useStarStore from '../../../stores/starStore'
 import Filter from '../filter/Filter'
 import { INITIAL_CENTER_REGION } from '../../../constants/mapConstants'
+import getStarLength from '../../../hooks/getStarLength'
+import useToastStore from '../../../stores/toastStore'
+import { saveToLocal } from '../../../services/localStorageService'
 
 const Map = () => {
   const navigate = useNavigate()
   const [map, setMap] = useState<MapInstance | null>(null) // map 상태 추가
-  const [isToast, setIsToast] = useState<boolean>(false)
+  // const [isToast, setIsToast] = useState<boolean>(false)
   const currentOverlayRef = useRef<CustomOverlayInstance | null>(null)
   const markersRef = useRef<MarkerInstance[]>([])
   const currentRegion = useRef<string | null>(null)
   const { setRegion, setMapZustand } = useMapStore(state => state.actions)
   const parkingData = useParkingInfoStore(state => state.parkingData)
-  const setParkingData = useParkingInfoStore(
-    state => state.actions.setParkingData
-  )
-  const addStar = useStarStore(state => state.actions.addStar)
-  const deletePartStar = useStarStore(state => state.actions.deletePartStar)
-  const isFilter = useParkingInfoStore(state => state.isFilter)
+  const { setParkingData } = useParkingInfoStore(state => state.actions)
+  const { addStar, deletePartStar } = useStarStore(state => state.actions)
   const filterParkingData = useParkingInfoStore(
     state => state.filterPargkigData
+  )
+  const isToast = useToastStore(state => state.isToast)
+  const { setIsToast, setToastMessage, setToastColor } = useToastStore(
+    state => state.actions
   )
 
   const getData = async (region: string) => {
@@ -141,9 +144,21 @@ const Map = () => {
             if (isStar) {
               deletePartStar(elem.LAT, elem.LOT)
               starBtn.innerHTML = '<img src="/src/assets/grayStar.svg"/>'
+              saveToLocal()
             } else {
-              addStar(elem)
-              starBtn.innerHTML = '<img src="/src/assets/yellowStar.svg"/>'
+              const isStarLengthFull = getStarLength()
+              if (isStarLengthFull) {
+                setIsToast(true)
+                setToastMessage('⚠️ 즐겨찾기는 20개 이하만 가능합니다!')
+                setToastColor('#b76160')
+              } else {
+                addStar(elem)
+                starBtn.innerHTML = '<img src="/src/assets/yellowStar.svg"/>'
+                saveToLocal()
+                setIsToast(true)
+                setToastMessage('⭐ 즐겨찾기 등록이 완료되었습니다!')
+                setToastColor('#8ca36d')
+              }
             }
           }
         }
@@ -174,7 +189,6 @@ const Map = () => {
           displayMarker(lat, lot, elem) // 마커 표시
         })
       } else {
-        console.log('parking')
         parkingData.forEach(elem => {
           const lat = Number(elem.LAT)
           const lot = Number(elem.LOT)
@@ -216,6 +230,8 @@ const Map = () => {
         const level = map.getLevel()
         if (level >= 7) {
           setIsToast(true)
+          setToastMessage('⚠️ 더 이상 축소가 불가능합니다! ')
+          setToastColor('#b76160')
         }
       })
     }
@@ -225,13 +241,7 @@ const Map = () => {
       <Filter />
       <SearchCurrentMap />
       <MoveCurrentPosition map={map} />
-      {isToast && (
-        <Toast
-          message="⚠️ 더 이상 축소가 불가능합니다!"
-          setIsToast={setIsToast}
-          map={map}
-        />
-      )}
+      {isToast && <Toast map={map} />}
     </MapContainer>
   )
 }
