@@ -11,6 +11,10 @@ interface Actions {
     setParkingData: (newData: ParkingInfo[] | null) => void
     setIsFilter: (newFilter: boolean[]) => void
     filterNotFree: () => void
+    filterFree: () => void
+    filterNW: () => void
+    filterNS: () => void
+    filterAbleParking: () => void
   }
 }
 const useParkingInfoStore = create<State & Actions>(set => ({
@@ -26,9 +30,33 @@ const useParkingInfoStore = create<State & Actions>(set => ({
           item => item.PAY_YN === 'Y'
         ),
       })),
-    resetNotFree: () =>
+    reset: () =>
       set(() => ({
         filterPargkigData: null,
+      })),
+    filterFree: () =>
+      set(state => ({
+        filterPargkigData: state.parkingData?.filter(
+          item => item.PAY_YN === 'N'
+        ),
+      })),
+    filterNW: () =>
+      set(state => ({
+        filterPargkigData: state.parkingData?.filter(
+          item => item.PKLT_TYPE === 'NW'
+        ),
+      })),
+    filterNS: () =>
+      set(state => ({
+        filterPargkigData: state.parkingData?.filter(
+          item => item.PKLT_TYPE === 'NS'
+        ),
+      })),
+    filterAbleParking: () =>
+      set(state => ({
+        filterPargkigData: state.parkingData?.filter(
+          item => Math.abs(item.TPKCT - item.NOW_PRK_VHCL_CNT) > 0
+        ),
       })),
   },
 }))

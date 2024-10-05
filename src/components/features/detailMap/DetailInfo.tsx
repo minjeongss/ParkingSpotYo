@@ -23,7 +23,7 @@ const DetailInfo = ({ info }: { info: ParkingInfo }) => {
       />
       <DotLine />
       <AlignBoldText
-        data={`현재 주차 가능 ${info.NOW_PRK_VHCL_CNT}대 / 전체 주차공간 ${info.TPKCT}대`}
+        data={`현재 주차 가능 ${info.TPKCT - info.NOW_PRK_VHCL_CNT}대 / 전체 주차공간 ${info.TPKCT}대`}
       />
       <AlignText type="종류" data={info.PRK_TYPE_NM} />
       <AlignText type="주소" data={info.ADDR} />

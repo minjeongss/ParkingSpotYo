@@ -12,15 +12,33 @@ import useParkingInfoStore from '../../../stores/parkingInfoStore'
 
 const FilterItem = ({ index, type }: { index: number; type: string }) => {
   const isClicked = useParkingInfoStore(state => state.isFilter[index])
-  const setIsFilter = useParkingInfoStore(state => state.actions.setIsFilter)
-  // const [isClicked, setIsClicked] = useState(false)
-  // const parkingData = useParkingInfoStore(state => state.parkingData)
-  const filterNotFree = useParkingInfoStore(
-    state => state.actions.filterNotFree
-  )
-  const resetNotFree = useParkingInfoStore(state => state.actions.filterNotFree)
+  const {
+    setIsFilter,
+    filterNotFree,
+    filterFree,
+    filterNW,
+    filterNS,
+    filterAbleParking,
+  } = useParkingInfoStore(state => state.actions)
+  const reset = useParkingInfoStore(state => state.actions.filterNotFree)
   const handleClick = () => {
     const newIsFilter = [...useParkingInfoStore.getState().isFilter]
+
+    // 유료-무료, 노상-노외 성립하지 않도록 설정
+    console.log(type)
+    if (type === '유료') {
+      newIsFilter[1] = false
+    }
+    if (type === '무료') {
+      newIsFilter[0] = false
+    }
+    if (type === '노상') {
+      newIsFilter[3] = false
+    }
+    if (type === '노외') {
+      newIsFilter[2] = false
+    }
+
     newIsFilter[index] = !isClicked // 현재 클릭 상태 토글
     setIsFilter(newIsFilter) // 업데이트된 필터 상태 저장
 
@@ -28,8 +46,20 @@ const FilterItem = ({ index, type }: { index: number; type: string }) => {
       if (type === '유료') {
         filterNotFree()
       }
+      if (type === '무료') {
+        filterFree()
+      }
+      if (type === '노상') {
+        filterNS()
+      }
+      if (type === '노외') {
+        filterNW()
+      }
+      if (type === '현재 주차 가능') {
+        filterAbleParking()
+      }
     } else {
-      resetNotFree()
+      reset()
     }
   }
   const setIcon = (color: string) => {
