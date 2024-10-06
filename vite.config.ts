@@ -9,4 +9,7 @@ import svgr from 'vite-plugin-svgr'
 export default defineConfig({
   plugins: [react(), svgr()],
   server: { port: 3000 },
+  define: {
+    __APP_ENV: process.env.VITE_VERCEL_ENV,
+  },
 })
