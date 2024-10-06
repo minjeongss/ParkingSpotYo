@@ -14,4 +14,5 @@ export const fetchParkingData = async (
     return undefined
   }
 }
+
 export default fetchParkingData
