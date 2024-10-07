@@ -74,7 +74,7 @@ const Map = () => {
 
   useEffect(() => {
     const displayMarker = (lat: number, lot: number, elem: ParkingInfo) => {
-      const imageSrc = '../../../src/assets/marker.svg'
+      const imageSrc = '/marker.svg'
       const imageSize = new window.kakao.maps.Size(30, 30)
       const imageOption = { offset: new window.kakao.maps.Point(15, 30) }
 
@@ -99,9 +99,7 @@ const Map = () => {
         const isStarInit = useStarStore
           .getState()
           .star?.some(item => item.LAT === elem.LAT && item.LOT === elem.LOT)
-        const starImageSrc = isStarInit
-          ? '../../../src/assets/yellowStar.svg'
-          : '../../../src/assets/grayStar.svg'
+        const starImageSrc = isStarInit ? '/yellowStar.svg' : '/grayStar.svg'
         const content = document.createElement('div')
         content.innerHTML = `
           <div class="overlayConainer">
@@ -145,8 +143,7 @@ const Map = () => {
               )
             if (isStar) {
               deletePartStar(elem.LAT, elem.LOT)
-              starBtn.innerHTML =
-                '<img src="../../../src/assets/grayStar.svg"/>'
+              starBtn.innerHTML = '<img src="/grayStar.svg"/>'
               saveToLocal()
             } else {
               const isStarLengthFull = getStarLength()
@@ -156,8 +153,7 @@ const Map = () => {
                 setToastColor('#b76160')
               } else {
                 addStar(elem)
-                starBtn.innerHTML =
-                  '<img src="../../../src/assets/yellowStar.svg"/>'
+                starBtn.innerHTML = '<img src="/yellowStar.svg"/>'
                 saveToLocal()
                 setIsToast(true)
                 setToastMessage('⭐ 즐겨찾기 등록이 완료되었습니다!')
